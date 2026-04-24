@@ -1,0 +1,16 @@
+{
+  "name": "주향 노트",
+  "short_name": "주향 노트",
+  "description": "일본주 · 한국전통주 시음 노트",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f0f7fd",
+  "theme_color": "#4a8bc4",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,33 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#cce8f8"/>
+      <stop offset="100%" stop-color="#b2d8f2"/>
+    </linearGradient>
+    <linearGradient id="liq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(248,253,255,0.88)"/>
+      <stop offset="100%" stop-color="rgba(215,238,255,0.94)"/>
+    </linearGradient>
+    <clipPath id="cup-clip">
+      <path d="M55 72 L61 152 L139 152 L145 72 Z"/>
+    </clipPath>
+  </defs>
+  <!-- Background -->
+  <rect width="200" height="200" rx="42" fill="url(#bg)"/>
+  <!-- Drop shadow -->
+  <ellipse cx="100" cy="170" rx="47" ry="8" fill="rgba(60,130,210,0.14)"/>
+  <!-- Liquid (slightly opaque - makgeolli/nigori style) -->
+  <rect x="50" y="78" width="100" height="74" fill="url(#liq)" clip-path="url(#cup-clip)"/>
+  <!-- Cup body -->
+  <path d="M55 72 L61 152 L139 152 L145 72" fill="rgba(255,255,255,0.42)" stroke="rgba(148,200,242,0.9)" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Liquid surface shimmer -->
+  <ellipse cx="100" cy="80" rx="43" ry="8.5" fill="rgba(240,252,255,0.72)"/>
+  <!-- Cup rim (백자 style - clean white) -->
+  <ellipse cx="100" cy="72" rx="46" ry="9.5" fill="white" stroke="rgba(148,200,242,0.85)" stroke-width="3"/>
+  <!-- Left porcelain highlight -->
+  <path d="M63 85 Q60 117 63 144" stroke="rgba(255,255,255,0.84)" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+  <!-- Foot transition -->
+  <path d="M69 152 Q67 160 67 163 L133 163 Q133 160 131 152" fill="#ecf6fd" stroke="rgba(148,200,242,0.7)" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Foot ring -->
+  <ellipse cx="100" cy="163" rx="33" ry="5.5" fill="rgba(182,225,250,0.55)" stroke="rgba(148,200,242,0.55)" stroke-width="2"/>
+</svg>

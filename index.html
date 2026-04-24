@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>주향 노트</title>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#4a8bc4"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="주향 노트"/>
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- ══ 스플래시 ══ -->
+<div id="splash-screen">
+  <div class="splash-inner">
+    <svg class="splash-cup-svg" viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sp-liq" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(220,242,255,0.9)"/>
+          <stop offset="100%" stop-color="rgba(185,225,252,0.95)"/>
+        </linearGradient>
+        <clipPath id="sp-cup-clip">
+          <path d="M28 58 L34 138 L106 138 L112 58 Z"/>
+        </clipPath>
+      </defs>
+      <!-- Liquid -->
+      <rect x="24" y="68" width="92" height="70" fill="url(#sp-liq)" clip-path="url(#sp-cup-clip)" class="sp-liquid"/>
+      <!-- Liquid surface -->
+      <ellipse cx="70" cy="70" rx="43" ry="8" fill="rgba(230,248,255,0.7)" class="sp-surface"/>
+      <!-- Cup body -->
+      <path d="M28 58 L34 138 L106 138 L112 58" fill="rgba(255,255,255,0.35)" stroke="rgba(148,200,242,0.85)" stroke-width="3" stroke-linejoin="round" class="sp-glass"/>
+      <!-- Rim -->
+      <ellipse cx="70" cy="58" rx="44" ry="9" fill="rgba(240,252,255,0.9)" stroke="rgba(148,200,242,0.8)" stroke-width="2.5" class="sp-glass"/>
+      <!-- Highlight -->
+      <path d="M34 68 Q31 103 34 130" stroke="rgba(255,255,255,0.75)" stroke-width="5" fill="none" stroke-linecap="round" class="sp-glass"/>
+      <!-- Foot -->
+      <path d="M44 138 Q42 148 42 151 L98 151 Q98 148 96 138" fill="rgba(220,240,255,0.6)" stroke="rgba(148,200,242,0.7)" stroke-width="2" class="sp-glass"/>
+      <ellipse cx="70" cy="151" rx="28" ry="5" fill="rgba(185,222,248,0.5)" stroke="rgba(148,200,242,0.5)" stroke-width="1.5" class="sp-glass"/>
+    </svg>
+    <div class="splash-title">주향 노트</div>
+    <div class="splash-sub">일본주 · 한국전통주 시음 기록</div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ══ 사이드바 ══ -->
+  <nav class="sidebar">
+    <div class="logo">
+      <svg class="logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="28" height="28" rx="7" fill="rgba(74,139,196,0.2)"/>
+        <path d="M8 10L9.5 22H18.5L20 10" fill="none" stroke="#a8d4f0" stroke-width="1.6" stroke-linejoin="round"/>
+        <ellipse cx="14" cy="10" rx="6" ry="1.8" fill="rgba(200,232,255,0.8)" stroke="#a8d4f0" stroke-width="1.4"/>
+        <path d="M10 14L18 14" stroke="rgba(168,212,248,0.5)" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="logo-text">주향 노트</div>
+        <div class="logo-sub">酒香ノート</div>
+      </div>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item active" data-page="tasting">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="nav-svg">
+            <path d="M8 3h8l-1.5 9c-.4 2.5-1.5 4-4.5 4S8.9 14.5 8.5 12L7 3z" opacity=".9"/>
+            <line x1="12" y1="16" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/>
+          </svg>
+        </span>
+        <span>시음 노트</span>
+      </li>
+      <li class="nav-item" data-page="stats">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="nav-svg">
+            <line x1="3" y1="20" x2="21" y2="20"/>
+            <rect x="4" y="12" width="4" height="8" rx="1"/><rect x="10" y="6" width="4" height="14" rx="1"/><rect x="16" y="9" width="4" height="11" rx="1"/>
+          </svg>
+        </span>
+        <span>통계</span>
+      </li>
+      <li class="nav-item" data-page="wishlist">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="nav-svg">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+            <circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span>위시리스트</span>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <button class="install-btn" id="install-btn" onclick="installApp()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M12 16l-4-4h3V4h2v8h3l-4 4z"/><path d="M4 20h16"/></svg>
+        <span>앱 설치</span>
+      </button>
+      <button class="sidebar-btn" onclick="openFeedbackModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span>피드백</span>
+      </button>
+      <button class="sidebar-btn" onclick="exportData()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span>데이터 내보내기</span>
+      </button>
+      <button class="sidebar-btn" onclick="openImportModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>데이터 가져오기</span>
+      </button>
+      <button class="sidebar-btn danger" onclick="resetAllData()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        <span>초기화</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══ 메인 ══ -->
+  <main class="main-content">
+
+    <!-- 시음 노트 페이지 -->
+    <div id="page-tasting" class="page active">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">시음 노트</h1>
+          <p class="page-subtitle" id="tasting-subtitle"></p>
+        </div>
+        <button class="btn btn-primary" onclick="openAddNote()">+ 기록 추가</button>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-cat="all">전체</button>
+          <button class="filter-tab" data-cat="korean">한국 전통주</button>
+          <button class="filter-tab" data-cat="japanese">일본주</button>
+          <button class="filter-tab" data-cat="other">기타</button>
+        </div>
+      </div>
+      <div class="note-list" id="note-list"></div>
+      <div class="empty-state" id="tasting-empty" style="display:none">
+        <div class="empty-icon">🍶</div>
+        <p>첫 번째 시음 기록을 남겨보세요!</p>
+        <button class="btn btn-primary" onclick="openAddNote()">기록 추가하기</button>
+      </div>
+    </div>
+
+    <!-- 통계 페이지 -->
+    <div id="page-stats" class="page">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">통계</h1>
+          <p class="page-subtitle" id="stats-subtitle"></p>
+        </div>
+      </div>
+      <div class="stats-period-bar">
+        <button class="stats-tab active" data-period="all">전체</button>
+        <button class="stats-tab" data-period="month">이번 달</button>
+        <button class="stats-tab" data-period="3month">3개월</button>
+        <button class="stats-tab" data-period="6month">6개월</button>
+        <button class="stats-tab" data-period="year">올해</button>
+        <button class="stats-tab" data-period="custom">기간 설정</button>
+      </div>
+      <div class="stats-custom-date" id="stats-custom-date" style="display:none">
+        <input type="date" id="stats-date-from"/>
+        <span class="date-sep">~</span>
+        <input type="date" id="stats-date-to"/>
+        <button class="btn btn-sm btn-primary" onclick="applyCustomPeriod()">적용</button>
+      </div>
+      <div class="stats-summary-grid" id="stats-summary"></div>
+      <div class="stats-charts-grid">
+        <div class="stats-card"><h3 class="stats-card-title">🍶 카테고리별</h3><div id="chart-category" class="bar-chart"></div></div>
+        <div class="stats-card"><h3 class="stats-card-title">🏷️ 종류별</h3><div id="chart-type" class="bar-chart"></div></div>
+        <div class="stats-card"><h3 class="stats-card-title">📍 지역별</h3><div id="chart-region" class="bar-chart"></div></div>
+        <div class="stats-card"><h3 class="stats-card-title">⭐ 점수 분포</h3><div id="chart-scores" class="bar-chart"></div></div>
+        <div class="stats-card stats-chart-wide">
+          <h3 class="stats-card-title">🎯 나의 취향 분석 리포트</h3>
+          <div id="taste-report-section" class="taste-report-wrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 위시리스트 페이지 -->
+    <div id="page-wishlist" class="page">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">위시리스트</h1>
+          <p class="page-subtitle" id="wishlist-subtitle"></p>
+        </div>
+        <button class="btn btn-primary" onclick="openAddWishlist()">+ 추가</button>
+      </div>
+      <div class="wishlist-list" id="wishlist-list"></div>
+      <div class="empty-state" id="wishlist-empty" style="display:none">
+        <div class="empty-icon">🔖</div>
+        <p>마셔보고 싶은 술을 저장해보세요!</p>
+        <button class="btn btn-primary" onclick="openAddWishlist()">추가하기</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ 시음 기록 모달 ══ -->
+<div class="modal-overlay" id="modal-note">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="modal-note-title">시음 기록 추가</h2>
+      <button class="btn-close" onclick="closeModal('modal-note')">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- 사진 -->
+      <input type="file" id="note-img-file" accept="image/*" style="display:none" onchange="handleNoteImageSelect(this)"/>
+      <div class="img-zone" onclick="document.getElementById('note-img-file').click()" style="margin-bottom:12px">
+        <img id="note-img-preview" style="display:none" alt=""/>
+        <div id="note-img-ph" class="img-ph"><span>📸</span><small>시음 사진 (선택)</small></div>
+      </div>
+      <div class="img-actions" style="margin-bottom:16px">
+        <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('note-img-file').click()">📷 사진 선택</button>
+        <button type="button" class="btn btn-sm btn-outline" id="note-img-remove-btn" style="display:none;color:var(--danger)" onclick="removeNoteImg()">✕ 삭제</button>
+      </div>
+
+      <div class="form-grid">
+        <!-- 기본 정보 -->
+        <div class="form-group form-col-2">
+          <label>술 이름 *</label>
+          <input type="text" id="note-name" placeholder="예: 아사히 준마이긴조, 복순도가 손막걸리"/>
+        </div>
+        <div class="form-group">
+          <label>종류 *</label>
+          <select id="note-type" onchange="handleTypeChange()">
+            <optgroup label="🇰🇷 한국 전통주">
+              <option value="makgeolli">막걸리</option>
+              <option value="dongdongju">동동주</option>
+              <option value="cheongju">청주 (한국)</option>
+              <option value="yakju">약주</option>
+              <option value="soju_diluted">희석식 소주</option>
+              <option value="soju_distilled">증류식 소주</option>
+              <option value="bori_soju">보리소주</option>
+              <option value="fruit_wine">과실주 (한국)</option>
+            </optgroup>
+            <optgroup label="🇯🇵 일본주">
+              <option value="junmai">준마이 (純米)</option>
+              <option value="ginjo">긴조 (吟醸)</option>
+              <option value="daiginjo">다이긴조 (大吟醸)</option>
+              <option value="honjozo">혼조조 (本醸造)</option>
+              <option value="namazake">나마자케 (生酒)</option>
+              <option value="nigori">니고리자케 (にごり)</option>
+              <option value="shochu_jp">소주 焼酎 (일본)</option>
+              <option value="umeshu">우메슈 (梅酒)</option>
+            </optgroup>
+            <option value="custom">기타 (직접 입력)</option>
+          </select>
+        </div>
+        <div class="form-group" id="type-custom-group" style="display:none">
+          <label>종류 직접 입력</label>
+          <input type="text" id="note-type-custom" placeholder="예: 삼해주, 안동소주, 이화주..."/>
+        </div>
+        <div class="form-group">
+          <label>양조장</label>
+          <input type="text" id="note-brewery" placeholder="예: 복순도가, 旭酒造"/>
+        </div>
+        <div class="form-group">
+          <label>지역</label>
+          <select id="note-region">
+            <option value="">선택</option>
+            <optgroup label="🇰🇷 한국">
+              <option value="seoul_gyeonggi">서울·경기</option>
+              <option value="jeolla">전라도</option>
+              <option value="chungcheong">충청도</option>
+              <option value="gyeongsang">경상도</option>
+              <option value="gangwon">강원도</option>
+              <option value="jeju">제주</option>
+            </optgroup>
+            <optgroup label="🇯🇵 일본">
+              <option value="niigata">니가타 (新潟)</option>
+              <option value="kyoto">교토 (京都)</option>
+              <option value="hyogo">효고 (兵庫)</option>
+              <option value="akita">아키타 (秋田)</option>
+              <option value="yamagata">야마가타 (山形)</option>
+              <option value="ishikawa">이시카와 (石川)</option>
+            </optgroup>
+            <option value="other_region">기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>도수 (ABV %)</label>
+          <input type="number" id="note-abv" placeholder="예: 15" min="0" max="100" step="0.1"/>
+        </div>
+        <div class="form-group">
+          <label>정미율 (%) — 사케</label>
+          <input type="number" id="note-polishing" placeholder="예: 60 (40% 정미)" min="0" max="100"/>
+        </div>
+        <div class="form-group">
+          <label>원료</label>
+          <input type="text" id="note-base" placeholder="예: 야마다니시키, 찹쌀, 보리"/>
+        </div>
+        <div class="form-group">
+          <label>날짜 *</label>
+          <input type="date" id="note-date"/>
+        </div>
+        <div class="form-group">
+          <label>시음량 (ml)</label>
+          <input type="number" id="note-amount" placeholder="예: 60" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>음용 온도</label>
+          <select id="note-serving-temp">
+            <option value="">선택</option>
+            <option value="cold">차갑게 冷 (5~10°C)</option>
+            <option value="room">상온 常温</option>
+            <option value="warm">살짝 데워서 ぬる燗 (~40°C)</option>
+            <option value="hot">따뜻하게 熱燗 (50°C+)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>액체 색깔</label>
+          <select id="note-color">
+            <option value="">선택</option>
+            <option value="무색 투명">무색 투명</option>
+            <option value="연한 황색">연한 황색</option>
+            <option value="황금빛">황금빛</option>
+            <option value="유백색 (약탁)">유백색 (약탁)</option>
+            <option value="탁백색 (막걸리/니고리)">탁백색 (막걸리/니고리)</option>
+            <option value="연한 녹황색">연한 녹황색</option>
+            <option value="연분홍">연분홍</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>투명도</label>
+          <select id="note-clarity">
+            <option value="">선택</option>
+            <option value="맑음 (투명)">맑음 (투명)</option>
+            <option value="약간 탁함">약간 탁함</option>
+            <option value="탁함">탁함</option>
+            <option value="불투명">불투명</option>
+          </select>
+        </div>
+
+        <!-- 향 -->
+        <div class="form-group form-col-2">
+          <label>향 · Nose / Aroma</label>
+          <textarea id="note-nose" rows="3" placeholder="첫인상, 과일향, 꽃향, 쌀, 발효 등..."></textarea>
+        </div>
+        <div class="form-group form-col-2">
+          <label>향 점수 <span class="slider-score-label" id="val-nose-score">—</span></label>
+          <div class="slider-row">
+            <span class="slider-edge">0</span>
+            <input type="range" id="note-nose-score" min="0" max="100" value="75" data-set="false" class="score-slider score-unset" oninput="activateSlider(this,'val-nose-score')"/>
+            <span class="slider-edge">100</span>
+            <button class="slider-reset-btn" onclick="resetSlider('note-nose-score','val-nose-score')" type="button">×</button>
+          </div>
+        </div>
+
+        <!-- 맛 -->
+        <div class="form-group form-col-2">
+          <label>맛 · Palate</label>
+          <textarea id="note-palate" rows="3" placeholder="입안에서 느껴지는 맛, 질감, 단맛, 산미..."></textarea>
+        </div>
+        <div class="form-group form-col-2">
+          <label>맛 점수 <span class="slider-score-label" id="val-palate-score">—</span></label>
+          <div class="slider-row">
+            <span class="slider-edge">0</span>
+            <input type="range" id="note-palate-score" min="0" max="100" value="75" data-set="false" class="score-slider score-unset" oninput="activateSlider(this,'val-palate-score')"/>
+            <span class="slider-edge">100</span>
+            <button class="slider-reset-btn" onclick="resetSlider('note-palate-score','val-palate-score')" type="button">×</button>
+          </div>
+        </div>
+
+        <!-- 여운 -->
+        <div class="form-group form-col-2">
+          <label>여운 · Finish</label>
+          <textarea id="note-finish" rows="2" placeholder="여운의 길이와 마지막에 남는 느낌..."></textarea>
+        </div>
+        <div class="form-group form-col-2">
+          <label>여운 점수 <span class="slider-score-label" id="val-finish-score">—</span></label>
+          <div class="slider-row">
+            <span class="slider-edge">0</span>
+            <input type="range" id="note-finish-score" min="0" max="100" value="75" data-set="false" class="score-slider score-unset" oninput="activateSlider(this,'val-finish-score')"/>
+            <span class="slider-edge">100</span>
+            <button class="slider-reset-btn" onclick="resetSlider('note-finish-score','val-finish-score')" type="button">×</button>
+          </div>
+        </div>
+
+        <!-- 종합점수 -->
+        <div class="form-group form-col-2">
+          <label>종합 점수 <span class="slider-score-label" id="val-total-score">—</span></label>
+          <div class="slider-row">
+            <span class="slider-edge">0</span>
+            <input type="range" id="note-score" min="0" max="100" value="75" data-set="false" class="score-slider score-unset" oninput="activateSlider(this,'val-total-score')"/>
+            <span class="slider-edge">100</span>
+            <button class="slider-reset-btn" onclick="resetSlider('note-score','val-total-score')" type="button">×</button>
+          </div>
+        </div>
+
+        <!-- 향미 프로필 -->
+        <div class="form-group form-col-2">
+          <label>향미 프로필 <span style="font-size:11px;font-weight:400;color:var(--text-muted)">(0 없음 → 5 강함)</span></label>
+          <div class="flavor-wrap">
+            <div class="flavor-sliders">
+              <div class="flavor-row"><span class="fl-emoji">🍯</span><span class="fl-lbl">달콤</span><input type="range" id="fl-sweet" min="0" max="5" value="0" step="1" oninput="updateFlavorPreview()"><span class="fl-val" id="fv-sweet">0</span></div>
+              <div class="flavor-row"><span class="fl-emoji">🍋</span><span class="fl-lbl">산미</span><input type="range" id="fl-acidic" min="0" max="5" value="0" step="1" oninput="updateFlavorPreview()"><span class="fl-val" id="fv-acidic">0</span></div>
+              <div class="flavor-row"><span class="fl-emoji">🌊</span><span class="fl-lbl">감칠맛</span><input type="range" id="fl-umami" min="0" max="5" value="0" step="1" oninput="updateFlavorPreview()"><span class="fl-val" id="fv-umami">0</span></div>
+              <div class="flavor-row"><span class="fl-emoji">🌾</span><span class="fl-lbl">곡물·쌀</span><input type="range" id="fl-grain" min="0" max="5" value="0" step="1" oninput="updateFlavorPreview()"><span class="fl-val" id="fv-grain">0</span></div>
+              <div class="flavor-row"><span class="fl-emoji">🍊</span><span class="fl-lbl">과일향</span><input type="range" id="fl-fruity" min="0" max="5" value="0" step="1" oninput="updateFlavorPreview()"><span class="fl-val" id="fv-fruity">0</span></div>
+              <div class="flavor-row"><span class="fl-emoji">🌸</span><span class="fl-lbl">꽃향</span><input type="range" id="fl-floral" min="0" max="5" value="0" step="1" oninput="updateFlavorPreview()"><span class="fl-val" id="fv-floral">0</span></div>
+            </div>
+            <canvas id="flavor-preview-canvas" width="200" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- 추가 정보 -->
+        <div class="form-group form-col-2">
+          <label>페어링 (음식)</label>
+          <input type="text" id="note-pairing" placeholder="예: 초밥, 파전, 두부, 치즈..."/>
+        </div>
+        <div class="form-group">
+          <label>가격 (원)</label>
+          <input type="number" id="note-price" placeholder="예: 15000" min="0"/>
+        </div>
+        <div class="form-group form-col-2">
+          <label>메모</label>
+          <textarea id="note-notes" rows="2" placeholder="시음 장소, 날씨, 특이사항..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note')">취소</button>
+      <button class="btn btn-primary" onclick="saveNote()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 위시리스트 모달 ══ -->
+<div class="modal-overlay" id="modal-wishlist">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-wl-title">위시리스트 추가</h2>
+      <button class="btn-close" onclick="closeModal('modal-wishlist')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group form-col-2">
+          <label>술 이름 *</label>
+          <input type="text" id="wl-name" placeholder="예: 닷사이 23 다이긴조"/>
+        </div>
+        <div class="form-group">
+          <label>종류</label>
+          <select id="wl-type" onchange="handleWlTypeChange()">
+            <option value="">선택</option>
+            <optgroup label="🇰🇷 한국 전통주">
+              <option value="makgeolli">막걸리</option>
+              <option value="dongdongju">동동주</option>
+              <option value="cheongju">청주 (한국)</option>
+              <option value="yakju">약주</option>
+              <option value="soju_diluted">희석식 소주</option>
+              <option value="soju_distilled">증류식 소주</option>
+              <option value="bori_soju">보리소주</option>
+              <option value="fruit_wine">과실주 (한국)</option>
+            </optgroup>
+            <optgroup label="🇯🇵 일본주">
+              <option value="junmai">준마이 (純米)</option>
+              <option value="ginjo">긴조 (吟醸)</option>
+              <option value="daiginjo">다이긴조 (大吟醸)</option>
+              <option value="honjozo">혼조조 (本醸造)</option>
+              <option value="namazake">나마자케 (生酒)</option>
+              <option value="nigori">니고리자케 (にごり)</option>
+              <option value="shochu_jp">소주 焼酎 (일본)</option>
+              <option value="umeshu">우메슈 (梅酒)</option>
+            </optgroup>
+            <option value="custom">기타 (직접 입력)</option>
+          </select>
+        </div>
+        <div class="form-group" id="wl-type-custom-group" style="display:none">
+          <label>종류 직접 입력</label>
+          <input type="text" id="wl-type-custom" placeholder="직접 입력"/>
+        </div>
+        <div class="form-group">
+          <label>양조장</label>
+          <input type="text" id="wl-brewery" placeholder="예: 旭酒造"/>
+        </div>
+        <div class="form-group">
+          <label>지역</label>
+          <select id="wl-region">
+            <option value="">선택</option>
+            <optgroup label="🇰🇷 한국"><option value="seoul_gyeonggi">서울·경기</option><option value="jeolla">전라도</option><option value="chungcheong">충청도</option><option value="gyeongsang">경상도</option><option value="gangwon">강원도</option><option value="jeju">제주</option></optgroup>
+            <optgroup label="🇯🇵 일본"><option value="niigata">니가타 (新潟)</option><option value="kyoto">교토 (京都)</option><option value="hyogo">효고 (兵庫)</option><option value="akita">아키타 (秋田)</option><option value="yamagata">야마가타 (山形)</option><option value="ishikawa">이시카와 (石川)</option></optgroup>
+            <option value="other_region">기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>우선순위</label>
+          <select id="wl-priority">
+            <option value="high">꼭 마셔봐야 함 🔴</option>
+            <option value="medium" selected>원함 🟡</option>
+            <option value="low">보통 🔵</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>목표 가격 (원)</label>
+          <input type="number" id="wl-price" placeholder="예: 30000" min="0"/>
+        </div>
+        <div class="form-group form-col-2">
+          <label>메모</label>
+          <textarea id="wl-notes" rows="2" placeholder="구매처, 추가 정보..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-wishlist')">취소</button>
+      <button class="btn btn-primary" onclick="saveWishlist()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 사진 크롭 모달 ══ -->
+<div class="modal-overlay" id="modal-crop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>사진 자르기</h2>
+      <button class="btn-close" onclick="cancelCrop()">×</button>
+    </div>
+    <div class="modal-body crop-modal-body">
+      <div class="crop-wrap">
+        <div class="crop-container" id="crop-container">
+          <img id="crop-img" class="crop-img" draggable="false" alt=""/>
+        </div>
+      </div>
+      <div class="crop-zoom-row">
+        <span class="crop-zoom-icon">🔍</span>
+        <input type="range" id="crop-zoom-slider" class="crop-zoom-slider" min="100" max="300" value="100" oninput="cropSetZoom(this.value)"/>
+        <span class="crop-zoom-icon">🔎</span>
+      </div>
+      <p class="crop-hint">드래그로 위치 조절 · 슬라이더로 확대/축소</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="cancelCrop()">취소</button>
+      <button class="btn btn-primary" onclick="confirmCrop()">적용</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 피드백 모달 ══ -->
+<div class="modal-overlay" id="modal-feedback">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>피드백 보내기</h2>
+      <button class="btn-close" onclick="closeFeedbackModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="feedback-desc">앱 사용 중 불편한 점이나 개선 요청을 알려주세요!</p>
+      <div class="form-group" style="margin-top:14px">
+        <textarea id="feedback-text" rows="6" placeholder="자유롭게 작성해주세요..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeFeedbackModal()">취소</button>
+      <button class="btn btn-primary" onclick="sendEmailFeedback()">✉️ 이메일</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 데이터 가져오기 모달 ══ -->
+<div class="modal-overlay" id="modal-import">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>데이터 가져오기</h2>
+      <button class="btn-close" onclick="closeModal('modal-import')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:14px;font-size:13px">이전에 내보낸 <strong>주향 노트 JSON 파일</strong>을 선택하세요.</p>
+      <label class="import-file-label">
+        <span>📂 파일 선택</span>
+        <input type="file" id="import-file" accept=".json" onchange="handleImportFile(this)"/>
+      </label>
+      <div id="import-preview"></div>
+      <div class="import-mode-box">
+        <div class="import-mode-row"><span class="import-mode-icon">🔀</span><div><strong>병합</strong> — 기존 데이터를 유지하면서 새 항목만 추가<br/><span style="font-size:12px;color:var(--text-muted)">ID가 같은 항목은 건너뜁니다.</span></div></div>
+        <div class="import-mode-row" style="margin-top:10px"><span class="import-mode-icon">🔄</span><div><strong>덮어쓰기</strong> — 기존 데이터를 모두 삭제하고 파일 내용으로 교체<br/><span style="font-size:12px;color:var(--danger)">되돌릴 수 없습니다.</span></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-import')">취소</button>
+      <button class="btn btn-primary" id="import-btn-merge" disabled onclick="doImport('merge')">🔀 병합</button>
+      <button class="btn btn-danger" id="import-btn-replace" disabled onclick="doImport('replace')">🔄 덮어쓰기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 모바일 하단 내비 ══ -->
+<nav class="bottom-nav">
+  <button class="bottom-nav-item active" data-page="tasting">
+    <span class="bottom-nav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="nav-svg-bottom">
+        <path d="M8 3h8l-1.5 9c-.4 2.5-1.5 4-4.5 4S8.9 14.5 8.5 12L7 3z"/>
+        <line x1="12" y1="16" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/>
+      </svg>
+    </span>
+    <span class="bottom-nav-label">시음 노트</span>
+  </button>
+  <button class="bottom-nav-item" data-page="stats">
+    <span class="bottom-nav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="nav-svg-bottom">
+        <line x1="3" y1="20" x2="21" y2="20"/>
+        <rect x="4" y="12" width="4" height="8" rx="1"/><rect x="10" y="6" width="4" height="14" rx="1"/><rect x="16" y="9" width="4" height="11" rx="1"/>
+      </svg>
+    </span>
+    <span class="bottom-nav-label">통계</span>
+  </button>
+  <button class="bottom-nav-item" data-page="wishlist">
+    <span class="bottom-nav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="nav-svg-bottom">
+        <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+        <circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+    </span>
+    <span class="bottom-nav-label">위시리스트</span>
+  </button>
+  <button class="bottom-nav-item" onclick="openMoreMenu()">
+    <span class="bottom-nav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" class="nav-svg-bottom">
+        <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+      </svg>
+    </span>
+    <span class="bottom-nav-label">더보기</span>
+  </button>
+</nav>
+
+<!-- ══ 모바일 더보기 메뉴 ══ -->
+<div id="more-menu-overlay" class="more-menu-overlay" onclick="closeMoreMenu()">
+  <div class="more-menu-panel" onclick="event.stopPropagation()">
+    <div class="more-menu-handle"></div>
+    <button class="more-menu-item" onclick="closeMoreMenu();openFeedbackModal()">
+      <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+      <div><div class="more-menu-label">피드백하기</div><div class="more-menu-desc">불편사항 및 개선 요청</div></div>
+    </button>
+    <div class="more-menu-divider"></div>
+    <button class="more-menu-item" onclick="closeMoreMenu();exportData()">
+      <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+      <div><div class="more-menu-label">데이터 내보내기</div><div class="more-menu-desc">JSON 파일로 저장</div></div>
+    </button>
+    <button class="more-menu-item" onclick="closeMoreMenu();openImportModal()">
+      <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+      <div><div class="more-menu-label">데이터 가져오기</div><div class="more-menu-desc">JSON 파일에서 복원</div></div>
+    </button>
+    <div class="more-menu-divider"></div>
+    <button class="more-menu-item danger" onclick="closeMoreMenu();resetAllData()">
+      <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></span>
+      <div><div class="more-menu-label">초기화하기</div><div class="more-menu-desc">모든 데이터 삭제</div></div>
+    </button>
+  </div>
+</div>
+
+<!-- ══ 토스트 ══ -->
+<div id="toast" class="toast"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>
