@@ -144,6 +144,14 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         <span>피드백</span>
       </button>
+      <button class="sidebar-btn" onclick="window.open('manual.html','_blank')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        <span>사용설명서</span>
+      </button>
+      <button class="sidebar-btn" onclick="window.open('patchnotes.html','_blank')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>업데이트 노트</span>
+      </button>
       <button class="sidebar-btn" onclick="exportData()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <span>데이터 내보내기</span>
@@ -693,6 +701,14 @@
     <button class="more-menu-item" onclick="closeMoreMenu();openFeedbackModal()">
       <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
       <div><div class="more-menu-label">피드백하기</div><div class="more-menu-desc">불편사항 및 개선 요청</div></div>
+    </button>
+    <button class="more-menu-item" onclick="closeMoreMenu();window.open('manual.html','_blank')">
+      <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <div><div class="more-menu-label">사용설명서</div><div class="more-menu-desc">앱 기능 및 사용법 안내</div></div>
+    </button>
+    <button class="more-menu-item" onclick="closeMoreMenu();window.open('patchnotes.html','_blank')">
+      <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <div><div class="more-menu-label">업데이트 노트</div><div class="more-menu-desc">버전별 변경사항 확인</div></div>
     </button>
     <div class="more-menu-divider"></div>
     <button class="more-menu-item" onclick="closeMoreMenu();exportData()">
