@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>주향 노트 사용설명서</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&display=swap');
+
+  :root {
+    --blue: #4a8bc4;
+    --blue-dark: #2c6ba3;
+    --blue-dim: rgba(74,139,196,0.12);
+    --dark: #0c1d38;
+    --text: #1a2a3a;
+    --text-muted: #6a8aaa;
+    --bg: #f2f7fd;
+    --bg-card: #fff;
+    --border: #bdd5ed;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', -apple-system, sans-serif; font-size: 15px; line-height: 1.75; color: var(--text); background: var(--bg); }
+
+  @media print {
+    body { font-size: 13px; background: white; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    .cover { min-height: 100vh; }
+    h2 { page-break-after: avoid; }
+    .step-box, .note-box, .warn-box { break-inside: avoid; }
+  }
+
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #050f1e 0%, #0c1d38 55%, #0e2540 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: white; text-align: center; padding: 60px 40px; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,139,196,0.1) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+  }
+  .cover-icon { font-size: 80px; margin-bottom: 20px; }
+  .cover-title { font-size: 44px; font-weight: 900; color: #a8d4f8; letter-spacing: -1px; margin-bottom: 6px; }
+  .cover-sub-jp { font-size: 18px; color: rgba(168,212,248,0.5); margin-bottom: 40px; }
+  .cover-line { width: 200px; height: 2px; background: linear-gradient(to right, transparent, #4a8bc4, transparent); margin: 0 auto 40px; }
+  .cover-meta { font-size: 14px; color: rgba(255,255,255,0.3); }
+  .cover-version { font-size: 17px; color: rgba(74,139,196,0.55); margin-top: 8px; }
+
+  .toc { max-width: 800px; margin: 0 auto; padding: 60px 40px; }
+  .toc h2 { font-size: 26px; color: var(--blue); margin-bottom: 32px; padding-bottom: 12px; border-bottom: 2px solid var(--blue-dim); }
+  .toc-list { list-style: none; }
+  .toc-list li { display: flex; align-items: baseline; gap: 8px; padding: 10px 0; border-bottom: 1px dotted var(--border); font-size: 15px; }
+  .toc-num { font-weight: 700; color: var(--blue); min-width: 28px; font-size: 13px; }
+  .toc-sub { font-size: 13px; color: var(--text-muted); margin-left: 36px; padding: 2px 0; }
+
+  .section { max-width: 800px; margin: 0 auto; padding: 60px 40px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; padding-bottom: 14px; border-bottom: 2px solid var(--blue-dim); }
+  .section-num { background: var(--blue); color: white; font-weight: 700; font-size: 14px; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-title { font-size: 24px; font-weight: 700; color: var(--dark); }
+  .section-emoji { font-size: 28px; }
+
+  h3 { font-size: 17px; font-weight: 700; color: var(--dark); margin: 28px 0 12px; }
+  p { margin-bottom: 12px; color: var(--text); }
+
+  .step-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin: 16px 0; position: relative; }
+  .step-box::before { content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px; background: var(--blue); border-radius: 0 3px 3px 0; }
+  .steps { list-style: none; counter-reset: step; }
+  .steps li { counter-increment: step; display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--bg); }
+  .steps li::before { content: counter(step); background: var(--blue-dim); color: var(--blue); font-weight: 700; font-size: 13px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+  .note-box { background: #eef6ff; border: 1px solid #b8d8f0; border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .note-box strong { color: var(--blue-dark); }
+  .warn-box { background: #fff3f0; border: 1px solid #f0b0a0; border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .warn-box strong { color: #c0401a; }
+
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .feature-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .feature-card-icon { font-size: 28px; margin-bottom: 8px; }
+  .feature-card-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--dark); }
+  .feature-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  .os-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .os-android { background: #e8f5e9; color: #2e7d32; }
+  .os-ios { background: #e3f2fd; color: #1565c0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th { background: var(--blue-dim); color: var(--dark); font-weight: 700; text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .pill { display: inline-block; background: var(--blue-dim); color: var(--blue-dark); border-radius: 6px; padding: 2px 8px; font-size: 13px; font-weight: 600; }
+  .url-box { background: #0c1d38; color: #a8d4f8; font-family: monospace; font-size: 14px; padding: 14px 20px; border-radius: 8px; margin: 12px 0; word-break: break-all; }
+  hr.section-sep { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  .print-btn { position: fixed; bottom: 28px; right: 28px; background: var(--blue); color: white; border: none; border-radius: 50px; padding: 14px 28px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 20px rgba(74,139,196,0.4); z-index: 999; font-family: inherit; }
+  .print-btn:hover { background: var(--blue-dark); }
+</style>
+</head>
+<body>
+
+<!-- 표지 -->
+<div class="cover">
+  <div class="cover-icon">🍶</div>
+  <div class="cover-title">주향 노트</div>
+  <div class="cover-sub-jp">酒香ノート · 사용설명서</div>
+  <div class="cover-line"></div>
+  <div class="cover-meta">일본주 · 한국전통주 시음 기록 앱</div>
+  <div class="cover-version">v1.2 · 2026</div>
+</div>
+
+<!-- 목차 -->
+<div class="toc page-break">
+  <h2>목차</h2>
+  <ul class="toc-list">
+    <li><span class="toc-num">1</span><span>앱 소개 및 주요 기능</span></li>
+    <li><span class="toc-num">2</span><span>설치 방법</span></li>
+    <div class="toc-sub">2-1. 안드로이드 · 2-2. iOS</div>
+    <li><span class="toc-num">3</span><span>시음 노트 작성</span></li>
+    <div class="toc-sub">술 종류 선택 · 사진 크롭 · 향미 프로필 · 점수</div>
+    <li><span class="toc-num">4</span><span>통계 분석</span></li>
+    <div class="toc-sub">내 통계 · 다른 사람 통계 · 취향 분석 리포트</div>
+    <li><span class="toc-num">5</span><span>위시리스트</span></li>
+    <li><span class="toc-num">6</span><span>데이터 내보내기 / 가져오기</span></li>
+    <li><span class="toc-num">7</span><span>데이터 관리 및 초기화</span></li>
+    <li><span class="toc-num">8</span><span>자주 묻는 질문 (FAQ)</span></li>
+  </ul>
+</div>
+
+<!-- 1. 앱 소개 -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <span class="section-emoji">🍶</span>
+    <div class="section-title">앱 소개 및 주요 기능</div>
+  </div>
+  <p><strong>주향 노트(酒香ノート)</strong>는 일본주와 한국전통주 애호가를 위한 시음 기록 앱입니다. 별도의 회원가입 없이 설치하여 바로 사용할 수 있으며, 모든 데이터는 기기에 안전하게 저장됩니다.</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-icon">📝</div>
+      <div class="feature-card-title">시음 노트 (메인)</div>
+      <div class="feature-card-desc">한국전통주 8종 + 일본주 8종 + 기타 직접입력. 향·맛·여운 텍스트 및 점수 기록.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🎯</div>
+      <div class="feature-card-title">향미 프로필</div>
+      <div class="feature-card-desc">달콤·산미·감칠맛·곡물쌀·과일향·꽃향 6축 레이더 차트. 사케·전통주 특화.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🖼️</div>
+      <div class="feature-card-title">인스타 공유 카드</div>
+      <div class="feature-card-desc">1080×1080px PNG 자동 생성. 술 정보·향미 차트·노트 포함.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">📊</div>
+      <div class="feature-card-title">통계 분석</div>
+      <div class="feature-card-desc">카테고리·종류·지역별 분포. 취향 분석 리포트 및 다른 사람 통계.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔖</div>
+      <div class="feature-card-title">위시리스트</div>
+      <div class="feature-card-desc">마셔보고 싶은 술 저장. 우선순위(🔴🟡🔵) 설정, 구매완료 처리.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">💾</div>
+      <div class="feature-card-title">데이터 백업</div>
+      <div class="feature-card-desc">전체 데이터(사진 포함) JSON 파일로 내보내기·가져오기.</div>
+    </div>
+  </div>
+  <div class="note-box">
+    <strong>💡 오프라인 사용 가능:</strong> 앱 설치 후에는 인터넷 없이도 시음 노트 조회 및 작성이 가능합니다. 다른 사람 통계는 인터넷 연결 시에만 작동합니다.
+  </div>
+</div>
+
+<!-- 2. 설치 -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <span class="section-emoji">📲</span>
+    <div class="section-title">설치 방법</div>
+  </div>
+  <p>주향 노트는 <strong>PWA(Progressive Web App)</strong> 방식으로 배포됩니다. 앱 스토어 설치 없이 브라우저에서 직접 설치합니다.</p>
+  <div class="url-box">https://somiwoojoopapa1212.github.io/hanju-note/</div>
+
+  <h3><span class="os-badge os-android">Android</span> 안드로이드 설치</h3>
+  <div class="step-box">
+    <ul class="steps">
+      <li><strong>Chrome 브라우저</strong>로 위 주소에 접속합니다.</li>
+      <li>하단에 <span class="pill">앱 설치</span> 배너가 나타나면 탭하거나, ⋮ 메뉴 → <span class="pill">홈 화면에 추가</span>를 선택합니다.</li>
+      <li>홈 화면에 <strong>주향 노트 🍶</strong> 아이콘이 추가됩니다.</li>
+    </ul>
+  </div>
+
+  <h3><span class="os-badge os-ios">iOS</span> 아이폰 / 아이패드 설치</h3>
+  <div class="warn-box">
+    <strong>⚠️ 주의:</strong> iOS에서는 반드시 <strong>Safari 브라우저</strong>로 접속해야 합니다.
+  </div>
+  <div class="step-box">
+    <ul class="steps">
+      <li><strong>Safari</strong>로 위 주소에 접속합니다.</li>
+      <li>하단 공유 버튼(⬆️) 탭 → <span class="pill">홈 화면에 추가</span>를 선택합니다.</li>
+      <li>홈 화면에 <strong>주향 노트 🍶</strong> 아이콘이 추가됩니다.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 3. 시음 노트 -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <span class="section-emoji">📝</span>
+    <div class="section-title">시음 노트 작성</div>
+  </div>
+
+  <h3>시음 노트 추가</h3>
+  <p>하단 <span class="pill">시음 노트</span> 탭 → <span class="pill">+ 기록 추가</span> 버튼을 탭합니다.</p>
+
+  <div class="step-box">
+    <table>
+      <thead><tr><th>항목</th><th>설명</th><th>필수</th></tr></thead>
+      <tbody>
+        <tr><td>술 이름</td><td>제품명</td><td>✅</td></tr>
+        <tr><td>종류</td><td>한국전통주 / 일본주 / 기타(직접입력)</td><td>✅</td></tr>
+        <tr><td>양조장</td><td>제조 양조장명</td><td></td></tr>
+        <tr><td>지역</td><td>한국(서울·경기/전라/충청/경상/강원/제주) + 일본(니가타/교토 등)</td><td></td></tr>
+        <tr><td>도수</td><td>알코올 도수 (%)</td><td></td></tr>
+        <tr><td>정미율</td><td>精米步合 — 사케 전용 (예: 60)</td><td></td></tr>
+        <tr><td>원료</td><td>야마다니시키·찹쌀·보리 등</td><td></td></tr>
+        <tr><td>날짜</td><td>시음 날짜</td><td>✅</td></tr>
+        <tr><td>음용 온도</td><td>冷 / 常温 / ぬる燗 / 熱燗</td><td></td></tr>
+        <tr><td>액체 색깔</td><td>무색투명 ~ 탁백색(막걸리/니고리) 등 8종</td><td></td></tr>
+        <tr><td>투명도</td><td>맑음 ~ 불투명</td><td></td></tr>
+        <tr><td>향 / 맛 / 여운</td><td>자유 텍스트 + 각 0~100 점수 슬라이더</td><td></td></tr>
+        <tr><td>종합 점수</td><td>0~100 슬라이더</td><td></td></tr>
+        <tr><td>향미 프로필</td><td>6축 슬라이더 (아래 참조)</td><td></td></tr>
+        <tr><td>사진</td><td>정사각형 크롭 저장</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>종류 선택 — 기타 직접 입력</h3>
+  <p>종류 드롭다운에서 <span class="pill">기타 (직접 입력)</span>을 선택하면 자유 텍스트 입력 필드가 나타납니다. 목록에 없는 술(이화주, 삼해주, 안동소주 등)을 직접 입력하세요.</p>
+
+  <h3>📷 사진 등록 (정사각형 크롭)</h3>
+  <p>사진 존을 탭하여 갤러리에서 이미지를 선택하면 <strong>정사각형 크롭</strong> 화면이 나타납니다.</p>
+  <ul style="padding-left:18px;margin-bottom:12px;">
+    <li>드래그로 위치 조정</li>
+    <li>슬라이더로 확대/축소</li>
+    <li><span class="pill">적용</span>으로 저장</li>
+  </ul>
+
+  <h3>🎯 향미 프로필 (Flavor Profile)</h3>
+  <p>6개의 슬라이더(각 0~5단계)를 조작하면 아래에 레이더 차트 미리보기가 실시간으로 업데이트됩니다. 슬라이더는 전체 너비로 표시되어 모바일에서도 편리합니다.</p>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="feature-card-icon">🍯</div><div class="feature-card-title">달콤 (Sweet)</div><div class="feature-card-desc">바닐라·꿀·캐러멜·미린</div></div>
+    <div class="feature-card"><div class="feature-card-icon">🍋</div><div class="feature-card-title">산미 (Acidic)</div><div class="feature-card-desc">상큼한 산미·유산균·레몬</div></div>
+    <div class="feature-card"><div class="feature-card-icon">🌊</div><div class="feature-card-title">감칠맛 (Umami)</div><div class="feature-card-desc">깊은 감칠맛·발효향·효모</div></div>
+    <div class="feature-card"><div class="feature-card-icon">🌾</div><div class="feature-card-title">곡물·쌀 (Grain)</div><div class="feature-card-desc">쌀·보리·누룩·곡물향</div></div>
+    <div class="feature-card"><div class="feature-card-icon">🍊</div><div class="feature-card-title">과일향 (Fruity)</div><div class="feature-card-desc">사과·배·복숭아·메론</div></div>
+    <div class="feature-card"><div class="feature-card-icon">🌸</div><div class="feature-card-title">꽃향 (Floral)</div><div class="feature-card-desc">꽃향·화사한 긴조 계열</div></div>
+  </div>
+  <div class="note-box">
+    <strong>💡 팁:</strong> 향미 데이터가 많을수록 취향 분석 리포트가 정확해집니다. 시음마다 입력해 보세요.
+  </div>
+
+  <h3>🖼️ 인스타그램 공유 카드</h3>
+  <p>시음 노트 카드의 공유 버튼을 탭하면 <strong>1080×1080px PNG</strong>가 자동 생성되어 다운로드됩니다.</p>
+</div>
+
+<!-- 4. 통계 -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <span class="section-emoji">📊</span>
+    <div class="section-title">통계 분석</div>
+  </div>
+
+  <p>하단 <span class="pill">통계</span> 탭 상단의 <span class="pill">내 통계</span> / <span class="pill">다른 사람 통계</span> 버튼으로 뷰를 전환합니다.</p>
+
+  <h3>내 통계</h3>
+  <table>
+    <thead><tr><th>섹션</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>요약 카드</td><td>총 시음 횟수 · 총 시음량 · 술 종류 수 · 평균 점수</td></tr>
+      <tr><td>카테고리별</td><td>한국전통주 vs 일본주 비율</td></tr>
+      <tr><td>종류별</td><td>막걸리 · 준마이 · 다이긴조 등</td></tr>
+      <tr><td>지역별</td><td>서울경기 · 니가타 · 교토 등</td></tr>
+      <tr><td>점수 분포</td><td>60 미만 / 60~69 / 70~79 / 80~89 / 90 이상</td></tr>
+      <tr><td>취향 분석 리포트</td><td>향미 평균 레이더 + 스타일 추천</td></tr>
+    </tbody>
+  </table>
+
+  <h3>내 통계 — 기간 필터</h3>
+  <p>전체 / 이번 달 / 3개월 / 6개월 / 올해 / 기간 설정(직접 입력) 중 선택합니다.</p>
+
+  <h3>취향 분석 리포트</h3>
+  <table>
+    <thead><tr><th>향미</th><th>추천 스타일</th></tr></thead>
+    <tbody>
+      <tr><td>🍯 달콤</td><td>아마자케·우메슈·버번 캐스크 막걸리</td></tr>
+      <tr><td>🍋 산미</td><td>야마가타·이시카와 준마이긴조, 생막걸리</td></tr>
+      <tr><td>🌊 감칠맛</td><td>준마이 다이긴조·약주·숙성 청주</td></tr>
+      <tr><td>🌾 곡물·쌀</td><td>혼조조·증류식 소주·보리소주</td></tr>
+      <tr><td>🍊 과일향</td><td>긴조·다이긴조·우메슈·과실주</td></tr>
+      <tr><td>🌸 꽃향</td><td>다이긴조·야마가타 긴조·제주 약주</td></tr>
+    </tbody>
+  </table>
+
+  <h3>다른 사람 통계</h3>
+  <p>데이터 공유에 동의한 사용자들의 익명 시음 기록을 집계합니다.</p>
+  <table>
+    <thead><tr><th>섹션</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>인기 술 TOP 5~10</td><td>시음 횟수 기준. 더 보기로 10개까지 확장 가능</td></tr>
+      <tr><td>지역별 분포</td><td>지역명 + 시음 횟수</td></tr>
+      <tr><td>종류별 분포</td><td>술 종류 + 시음 횟수</td></tr>
+      <tr><td>점수 랭킹</td><td>종합점수 평균 기준 술 이름 순위</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <strong>💡 데이터 공유 참여:</strong> 앱 첫 실행 시 나타나는 배너에서 <span class="pill">동의합니다</span>를 탭하면 내 기록이 익명으로 공유됩니다. 개인 정보는 전혀 수집하지 않습니다.
+  </div>
+</div>
+
+<!-- 5. 위시리스트 -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <span class="section-emoji">🔖</span>
+    <div class="section-title">위시리스트</div>
+  </div>
+  <p>하단 <span class="pill">위시리스트</span> 탭에서 마셔보고 싶은 술을 저장·관리합니다.</p>
+  <table>
+    <thead><tr><th>항목</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>술 이름 *</td><td>필수 입력</td></tr>
+      <tr><td>종류</td><td>기타 직접 입력 가능</td></tr>
+      <tr><td>양조장 / 지역</td><td>선택 입력</td></tr>
+      <tr><td>우선순위</td><td>꼭 마셔봐야 함(🔴) / 원함(🟡) / 보통(🔵)</td></tr>
+      <tr><td>목표 가격</td><td>구매 예산 (원)</td></tr>
+      <tr><td>메모</td><td>구매처·특이사항 자유 입력</td></tr>
+    </tbody>
+  </table>
+  <p>카드의 <span class="pill">완료</span> 버튼을 탭하면 완료 상태로 변경되어 목록 하단에 표시됩니다.</p>
+</div>
+
+<!-- 6. 데이터 관리 -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <span class="section-emoji">💾</span>
+    <div class="section-title">데이터 내보내기 / 가져오기</div>
+  </div>
+
+  <h3>데이터 내보내기 (백업)</h3>
+  <div class="step-box">
+    <ul class="steps">
+      <li>하단 더보기(<span class="pill">☰</span>) → <span class="pill">데이터 내보내기</span>를 탭합니다.</li>
+      <li><strong>hanju-note-날짜.json</strong> 파일이 자동 다운로드됩니다.</li>
+      <li>Google Drive · 카카오톡 등 안전한 위치에 보관하세요.</li>
+    </ul>
+  </div>
+
+  <h3>데이터 가져오기 (복원)</h3>
+  <div class="step-box">
+    <ul class="steps">
+      <li>더보기(<span class="pill">☰</span>) → <span class="pill">데이터 가져오기</span>를 탭합니다.</li>
+      <li><span class="pill">파일 선택</span>으로 JSON 파일을 선택합니다.</li>
+      <li>미리보기를 확인 후 <strong>병합</strong> 또는 <strong>덮어쓰기</strong>를 선택합니다.</li>
+    </ul>
+  </div>
+
+  <table>
+    <thead><tr><th>방식</th><th>동작</th><th>주의</th></tr></thead>
+    <tbody>
+      <tr><td>병합</td><td>기존 데이터 유지 + 새 항목만 추가</td><td>ID 중복 항목 건너뜀</td></tr>
+      <tr><td>덮어쓰기</td><td>기존 데이터 삭제 후 파일로 완전 교체</td><td style="color:#b91c1c">되돌릴 수 없음</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 7. 데이터 관리 -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <span class="section-emoji">🗄️</span>
+    <div class="section-title">데이터 관리 및 초기화</div>
+  </div>
+  <table>
+    <thead><tr><th>데이터 종류</th><th>저장 위치</th></tr></thead>
+    <tbody>
+      <tr><td>시음 노트 · 위시리스트</td><td>기기 localStorage</td></tr>
+      <tr><td>시음 사진</td><td>기기 IndexedDB</td></tr>
+    </tbody>
+  </table>
+  <div class="warn-box">
+    <strong>⚠️ 정기 백업 권장:</strong> 모든 데이터는 기기 로컬에만 저장됩니다. 브라우저 캐시 삭제·앱 재설치 시 삭제될 수 있습니다. <strong>6장의 내보내기 기능</strong>으로 정기적으로 백업하세요.
+  </div>
+  <p>더보기(<span class="pill">☰</span>) → <span class="pill">초기화하기</span>로 모든 데이터를 삭제할 수 있습니다. <strong>되돌릴 수 없으니 반드시 백업 후 진행하세요.</strong></p>
+</div>
+
+<!-- 8. FAQ -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <span class="section-emoji">❓</span>
+    <div class="section-title">자주 묻는 질문 (FAQ)</div>
+  </div>
+
+  <div class="step-box" style="margin-bottom:14px">
+    <strong>Q. 목록에 없는 술 종류도 기록할 수 있나요?</strong>
+    <p style="margin-top:8px;margin-bottom:0">A. 네. 종류 선택에서 <span class="pill">기타 (직접 입력)</span>을 고르면 자유롭게 입력 가능합니다. 이화주·삼해주·안동소주 등 어떤 술도 기록할 수 있습니다.</p>
+  </div>
+  <div class="step-box" style="margin-bottom:14px">
+    <strong>Q. 정미율(精米步合)이란 무엇인가요?</strong>
+    <p style="margin-top:8px;margin-bottom:0">A. 쌀을 도정한 비율로, 숫자가 낮을수록 많이 깎아낸(고급) 사케입니다. 예: 60%는 쌀 40%를 깎아낸 것, 23%는 다이긴조 최고급 등급.</p>
+  </div>
+  <div class="step-box" style="margin-bottom:14px">
+    <strong>Q. 기기를 교체할 때 데이터를 옮길 수 있나요?</strong>
+    <p style="margin-top:8px;margin-bottom:0">A. 네. 기존 기기에서 <span class="pill">데이터 내보내기</span>로 JSON 저장 후, 새 기기에서 <span class="pill">데이터 가져오기 → 덮어쓰기</span>로 이전하세요.</p>
+  </div>
+  <div class="step-box" style="margin-bottom:14px">
+    <strong>Q. 향미 프로필을 입력하지 않아도 되나요?</strong>
+    <p style="margin-top:8px;margin-bottom:0">A. 네, 선택 항목입니다. 단, 향미 데이터가 많을수록 취향 분석 리포트가 정확해집니다.</p>
+  </div>
+  <div class="step-box">
+    <strong>Q. 피드백이나 버그는 어디에 제보하나요?</strong>
+    <p style="margin-top:8px;margin-bottom:0">A. 더보기(<span class="pill">☰</span>) → <span class="pill">피드백하기</span>에서 이메일로 제보하실 수 있습니다.</p>
+  </div>
+
+  <div style="margin-top:60px;text-align:center;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);padding-top:32px;">
+    <div style="font-size:32px;margin-bottom:12px;">🍶</div>
+    <div style="font-weight:700;font-size:16px;color:var(--blue);margin-bottom:6px;">주향 노트 · 酒香ノート</div>
+    <div>좋은 술은 기록될 때 더 오래 기억됩니다</div>
+    <div style="margin-top:16px;">v1.2 · 2026 · shuttle1207@gmail.com</div>
+  </div>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ PDF로 저장</button>
+</body>
+</html>
