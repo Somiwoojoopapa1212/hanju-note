@@ -17,30 +17,74 @@
 <!-- ══ 스플래시 ══ -->
 <div id="splash-screen">
   <div class="splash-inner">
-    <svg class="splash-cup-svg" viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg">
+    <!-- 따르기 스트림 -->
+    <div class="sp-pour-wrap">
+      <div class="sp-pour-stream"></div>
+    </div>
+    <!-- 백자 잔 SVG -->
+    <svg class="splash-cup-svg" viewBox="0 0 140 185" xmlns="http://www.w3.org/2000/svg">
       <defs>
+        <!-- 막걸리/니고리 스타일 유백색 술 -->
         <linearGradient id="sp-liq" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="rgba(220,242,255,0.9)"/>
-          <stop offset="100%" stop-color="rgba(185,225,252,0.95)"/>
+          <stop offset="0%" stop-color="rgba(240,250,255,0.88)"/>
+          <stop offset="60%" stop-color="rgba(220,240,255,0.93)"/>
+          <stop offset="100%" stop-color="rgba(200,230,255,0.97)"/>
         </linearGradient>
+        <!-- 백자 하이라이트 그라디언트 -->
+        <linearGradient id="sp-hl" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.85)"/>
+          <stop offset="40%" stop-color="rgba(255,255,255,0.35)"/>
+          <stop offset="100%" stop-color="rgba(230,245,255,0.2)"/>
+        </linearGradient>
+        <!-- 잔 내부 클립 -->
         <clipPath id="sp-cup-clip">
-          <path d="M28 58 L34 138 L106 138 L112 58 Z"/>
+          <path d="M30,63 C29,92 29,118 33,142 L107,142 C111,118 111,92 110,63 Z"/>
         </clipPath>
       </defs>
-      <!-- Liquid -->
-      <rect x="24" y="68" width="92" height="70" fill="url(#sp-liq)" clip-path="url(#sp-cup-clip)" class="sp-liquid"/>
-      <!-- Liquid surface -->
-      <ellipse cx="70" cy="70" rx="43" ry="8" fill="rgba(230,248,255,0.7)" class="sp-surface"/>
-      <!-- Cup body -->
-      <path d="M28 58 L34 138 L106 138 L112 58" fill="rgba(255,255,255,0.35)" stroke="rgba(148,200,242,0.85)" stroke-width="3" stroke-linejoin="round" class="sp-glass"/>
-      <!-- Rim -->
-      <ellipse cx="70" cy="58" rx="44" ry="9" fill="rgba(240,252,255,0.9)" stroke="rgba(148,200,242,0.8)" stroke-width="2.5" class="sp-glass"/>
-      <!-- Highlight -->
-      <path d="M34 68 Q31 103 34 130" stroke="rgba(255,255,255,0.75)" stroke-width="5" fill="none" stroke-linecap="round" class="sp-glass"/>
-      <!-- Foot -->
-      <path d="M44 138 Q42 148 42 151 L98 151 Q98 148 96 138" fill="rgba(220,240,255,0.6)" stroke="rgba(148,200,242,0.7)" stroke-width="2" class="sp-glass"/>
-      <ellipse cx="70" cy="151" rx="28" ry="5" fill="rgba(185,222,248,0.5)" stroke="rgba(148,200,242,0.5)" stroke-width="1.5" class="sp-glass"/>
+
+      <!-- 술 액체 (애니메이션 위로) -->
+      <rect class="sp-liquid" x="18" y="132" width="104" height="130"
+            fill="url(#sp-liq)" clip-path="url(#sp-cup-clip)"/>
+
+      <!-- 액체 표면 (액체 채운 후 등장) -->
+      <ellipse class="sp-surface" cx="70" cy="72" rx="39" ry="7"
+               fill="rgba(240,252,255,0.75)"/>
+
+      <!-- 잔 몸체 (베지어 곡선으로 백자 실루엣) -->
+      <path d="M26,55 C24,90 24,118 29,142 L111,142 C116,118 116,90 114,55"
+            fill="url(#sp-hl)"
+            stroke="rgba(155,205,245,0.88)" stroke-width="2.8"
+            stroke-linejoin="round" class="sp-glass"/>
+
+      <!-- 잔 테두리 (위) -->
+      <ellipse cx="70" cy="55" rx="45" ry="9.5"
+               fill="rgba(248,253,255,0.95)"
+               stroke="rgba(155,205,245,0.85)" stroke-width="2.5"
+               class="sp-glass"/>
+
+      <!-- 왼쪽 백자 광택 하이라이트 -->
+      <path d="M32,68 Q30,100 32,134"
+            stroke="rgba(255,255,255,0.9)" stroke-width="6"
+            fill="none" stroke-linecap="round" class="sp-glass"/>
+
+      <!-- 오른쪽 은은한 반사 -->
+      <path d="M108,70 Q110,98 108,122"
+            stroke="rgba(255,255,255,0.32)" stroke-width="2.5"
+            fill="none" stroke-linecap="round" class="sp-glass"/>
+
+      <!-- 굽 전환부 -->
+      <path d="M40,142 Q38,152 38,155 L102,155 Q102,152 100,142"
+            fill="rgba(235,248,255,0.72)"
+            stroke="rgba(155,205,245,0.72)" stroke-width="2.2"
+            stroke-linejoin="round" class="sp-glass"/>
+
+      <!-- 굽 바닥 링 -->
+      <ellipse cx="70" cy="155" rx="32" ry="5.5"
+               fill="rgba(195,228,252,0.6)"
+               stroke="rgba(155,205,245,0.6)" stroke-width="1.8"
+               class="sp-glass"/>
     </svg>
+
     <div class="splash-title">주향 노트</div>
     <div class="splash-sub">일본주 · 한국전통주 시음 기록</div>
   </div>
@@ -223,13 +267,16 @@
     <div class="modal-body">
       <!-- 사진 -->
       <input type="file" id="note-img-file" accept="image/*" style="display:none" onchange="handleNoteImageSelect(this)"/>
-      <div class="img-zone" onclick="document.getElementById('note-img-file').click()" style="margin-bottom:12px">
-        <img id="note-img-preview" style="display:none" alt=""/>
-        <div id="note-img-ph" class="img-ph"><span>📸</span><small>시음 사진 (선택)</small></div>
+      <div class="note-img-zone" onclick="document.getElementById('note-img-file').click()">
+        <img id="note-img-preview" class="note-img-preview" alt=""/>
+        <div id="note-img-ph" class="note-img-ph">
+          <div style="font-size:32px">🍶</div>
+          <div style="font-size:13px;margin-top:6px;color:var(--text-muted)">사진을 추가해보세요</div>
+        </div>
       </div>
-      <div class="img-actions" style="margin-bottom:16px">
+      <div class="img-actions" style="margin:8px 0 16px">
         <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('note-img-file').click()">📷 사진 선택</button>
-        <button type="button" class="btn btn-sm btn-outline" id="note-img-remove-btn" style="display:none;color:var(--danger)" onclick="removeNoteImg()">✕ 삭제</button>
+        <button type="button" class="btn btn-sm btn-outline" id="note-img-remove-btn" style="display:none;color:var(--danger);border-color:rgba(224,84,84,0.4)" onclick="removeNoteImg()">✕ 삭제</button>
       </div>
 
       <div class="form-grid">

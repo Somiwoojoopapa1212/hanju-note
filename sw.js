@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hanju-note-v2';
+const CACHE_NAME = 'hanju-note-v3';
 const ASSETS = ['./', './index.html', './css/style.css', './js/storage.js', './js/app.js'];
 
 self.addEventListener('install', e => e.waitUntil(

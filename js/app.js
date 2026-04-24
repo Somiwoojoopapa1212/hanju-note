@@ -556,7 +556,7 @@ function showNoteImgPreview(url) {
   const preview = document.getElementById('note-img-preview');
   const ph = document.getElementById('note-img-ph');
   const rm = document.getElementById('note-img-remove-btn');
-  if (preview) { preview.src = url; preview.style.display = ''; }
+  if (preview) { preview.src = url; preview.style.display = 'block'; }
   if (ph) ph.style.display = 'none';
   if (rm) rm.style.display = '';
 }
