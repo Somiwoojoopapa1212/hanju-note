@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>주향 노트 · 업데이트 노트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&display=swap');
+
+  :root {
+    --primary: #4a8bc4;
+    --primary-dark: #2c6ba3;
+    --primary-light: #f5c842;
+    --primary-dim: rgba(74,139,196,0.1);
+    --dark: #0c1d38;
+    --text: #1a2a3a;
+    --text-muted: #6a8aaa;
+    --bg: #f2f7fd;
+    --card: #ffffff;
+    --border: #bdd5ed;
+    --new: #16a34a;
+    --new-bg: #f0fdf4;
+    --improve: #2563eb;
+    --improve-bg: #eff6ff;
+    --fix: #dc2626;
+    --fix-bg: #fef2f2;
+    --design: #7c3aed;
+    --design-bg: #faf5ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.75; }
+
+  @media print {
+    body { font-size: 13px; background: white; }
+    .no-print { display: none !important; }
+    .hero { min-height: auto; padding: 40px; }
+  }
+
+  /* ── 히어로 ── */
+  .hero {
+    background: linear-gradient(150deg, #050f1e 0%, #0c1d38 55%, #0e2540 100%);
+    color: white; text-align: center; padding: 64px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,139,196,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+  }
+  .hero-app { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: rgba(168,212,248,0.5); margin-bottom: 16px; text-transform: uppercase; }
+  .hero-title { font-size: 40px; font-weight: 900; color: #a8d4f8; letter-spacing: -1px; margin-bottom: 10px; }
+  .hero-sub { font-size: 16px; color: rgba(168,212,248,0.45); }
+  .hero-link { display: inline-block; margin-top: 24px; padding: 10px 22px; background: rgba(74,139,196,0.2); border: 1px solid rgba(74,139,196,0.4); border-radius: 24px; color: #a8d4f8; font-size: 13px; text-decoration: none; transition: background 0.2s; }
+  .hero-link:hover { background: rgba(74,139,196,0.35); }
+
+  /* ── 콘텐츠 ── */
+  .content { max-width: 760px; margin: 0 auto; padding: 60px 24px 80px; }
+
+  /* ── 타임라인 ── */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 72px; top: 8px; bottom: 8px; width: 2px;
+    background: linear-gradient(to bottom, var(--primary), rgba(74,139,196,0.15));
+  }
+  .release { display: flex; gap: 24px; margin-bottom: 48px; position: relative; }
+  .release-date-col { flex-shrink: 0; width: 72px; text-align: right; padding-top: 4px; }
+  .release-dot {
+    position: absolute; left: 64px; top: 8px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--primary); border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--primary);
+    z-index: 1;
+  }
+  .release-dot.latest { background: #a8d4f8; box-shadow: 0 0 0 2px #a8d4f8, 0 0 12px rgba(168,212,248,0.4); }
+  .release-date { font-size: 11px; font-weight: 700; color: var(--text-muted); line-height: 1.4; }
+
+  .release-body { flex: 1; }
+  .release-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .version-badge {
+    font-size: 13px; font-weight: 800; color: white;
+    background: var(--primary); padding: 4px 12px; border-radius: 20px;
+  }
+  .version-badge.latest { background: #a8d4f8; color: var(--dark); }
+  .release-name { font-size: 17px; font-weight: 700; color: var(--dark); }
+  .latest-tag {
+    font-size: 10px; font-weight: 700; padding: 2px 8px;
+    background: var(--primary-dim); color: var(--primary-dark);
+    border-radius: 10px; letter-spacing: 0.5px;
+  }
+
+  .change-list { display: flex; flex-direction: column; gap: 8px; }
+  .change-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px; border-radius: 10px; background: var(--card); border: 1px solid var(--border); }
+  .change-badge {
+    flex-shrink: 0; font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px; margin-top: 2px; white-space: nowrap;
+  }
+  .badge-new     { background: var(--new-bg);     color: var(--new);     }
+  .badge-improve { background: var(--improve-bg); color: var(--improve); }
+  .badge-fix     { background: var(--fix-bg);     color: var(--fix);     }
+  .badge-design  { background: var(--design-bg);  color: var(--design);  }
+  .change-text { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .change-text strong { color: var(--dark); }
+
+  /* ── 레전드 ── */
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+
+  /* ── 고정 버튼 ── */
+  .fab { position: fixed; bottom: 24px; right: 24px; background: var(--primary); color: white; border: none; border-radius: 50px; padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(74,139,196,0.4); font-family: inherit; transition: background 0.2s; }
+  .fab:hover { background: var(--primary-dark); }
+
+  @media (max-width: 600px) {
+    .timeline::before { left: 0; }
+    .release { flex-direction: column; gap: 10px; padding-left: 20px; }
+    .release-date-col { width: auto; text-align: left; }
+    .release-dot { left: -8px; }
+    .hero-title { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-app">🍶 주향 노트 · 酒香ノート</div>
+  <div class="hero-title">업데이트 노트</div>
+  <div class="hero-sub">버전별 변경사항 및 개선 이력</div>
+  <a class="hero-link" href="index.html">← 앱으로 돌아가기</a>
+</div>
+
+<div class="content">
+
+  <div class="legend">
+    <div class="legend-item"><span class="change-badge badge-new">✨ 신기능</span> 새로운 기능</div>
+    <div class="legend-item"><span class="change-badge badge-improve">🔧 개선</span> 기능 향상</div>
+    <div class="legend-item"><span class="change-badge badge-fix">🐛 수정</span> 버그 수정</div>
+    <div class="legend-item"><span class="change-badge badge-design">🎨 디자인</span> UI/UX 변경</div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- v1.1 -->
+    <div class="release">
+      <div class="release-date-col">
+        <div class="release-dot latest"></div>
+        <div class="release-date">2026<br/>04·24</div>
+      </div>
+      <div class="release-body">
+        <div class="release-header">
+          <span class="version-badge latest">v 1.1</span>
+          <span class="release-name">커뮤니티 통계 추가</span>
+          <span class="latest-tag">LATEST</span>
+        </div>
+        <div class="change-list">
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>다른 사람 통계</strong> 추가 — 통계 페이지에 '내 통계 / 다른 사람 통계' 탭 버튼 추가. Firebase Firestore (hanju_tastings 컬렉션) 기반으로 익명 시음 데이터 집계.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>데이터 공유 동의 배너</strong> — 앱 첫 실행 시 익명 시음 데이터 공유 여부를 선택할 수 있는 배너 표시. 동의 시 신규 시음 기록이 통계에 기여됨.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-improve">🔧 개선</span>
+            <span class="change-text">커뮤니티 통계 레이아웃 — 인기 술 · 지역별 · 종류별은 이름 전체가 보이는 목록으로 표시. 평균 점수(향 / 맛 / 여운 / 종합)는 100점 기준 바 차트로 표시.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.0 -->
+    <div class="release">
+      <div class="release-date-col">
+        <div class="release-dot"></div>
+        <div class="release-date">2026<br/>04·24</div>
+      </div>
+      <div class="release-body">
+        <div class="release-header">
+          <span class="version-badge">v 1.0</span>
+          <span class="release-name">주향 노트 출시 🎉</span>
+        </div>
+        <div class="change-list">
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>시음 노트 (메인 기능)</strong> — 한국전통주 8종 + 일본주 8종 + 기타 직접입력. 종류 선택 시 '기타'를 고르면 자유롭게 텍스트 입력 가능.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>향미 프로필 레이더 차트</strong> — 사케·전통주 특화 6축: 달콤 · 산미 · 감칠맛 · 곡물·쌀 · 과일향 · 꽃향. 슬라이더가 전체 너비를 사용해 모바일에서도 편리하게 조작.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>사케·전통주 특화 입력 필드</strong> — 정미율(精米步合) · 원료(米品種) · 음용 온도(冷/常温/ぬる燗/熱燗) · 투명도(맑음~불투명) · 액체 색깔(무색투명~탁백색) 지원.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>한국·일본 지역 분리 선택</strong> — 한국(서울·경기/전라/충청/경상/강원/제주) + 일본(니가타/교토/효고/아키타/야마가타/이시카와) 지역 옵션.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>향 · 맛 · 여운 점수 슬라이더</strong> (각 0~100) 및 종합 점수. 점수를 입력하지 않을 경우 × 버튼으로 미설정 상태로 초기화 가능.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>인스타그램 공유 카드</strong> — 1080×1080px PNG 자동 생성. 술 이름 · 향미 레이더 차트 · 시음 노트 · 날짜 포함.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>통계 분석</strong> — 카테고리별(한국/일본) · 종류별 · 지역별 · 점수 분포. 향미 데이터 기반 취향 분석 리포트 (스타일 추천 포함).</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>위시리스트</strong> — 마셔보고 싶은 술 저장. 우선순위(🔴🟡🔵) · 목표 가격 · 종류 설정. 완료 처리로 구분 관리.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>데이터 내보내기 / 가져오기</strong> — 전체 데이터(사진 포함)를 JSON 파일로 백업 및 복원. 병합 · 덮어쓰기 모드 지원.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>PWA 지원</strong> — 홈 화면에 앱 설치 가능 (백자 잔 아이콘). 오프라인에서도 시음 노트 조회 · 작성 가능.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-design">🎨 디자인</span>
+            <span class="change-text"><strong>사케 특화 디자인</strong> — 맑고 청량한 쿨 블루 색조 (primary: #4a8bc4). 백자 잔에 불투명한 막걸리·니고리 스타일 액체가 담긴 SVG 스플래시 아이콘.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);text-align:center;color:var(--text-muted);font-size:13px;line-height:2;">
+    <div style="font-size:28px;margin-bottom:8px;">🍶</div>
+    <div style="font-weight:700;color:var(--primary);font-size:15px;margin-bottom:4px;">주향 노트 · 酒香ノート</div>
+    <div>피드백이나 버그 제보는 앱 내 <strong>피드백하기</strong> 메뉴를 이용해주세요.</div>
+    <div style="margin-top:8px;"><a href="https://somiwoojoopapa1212.github.io/hanju-note/" style="color:var(--primary);text-decoration:none;">somiwoojoopapa1212.github.io/hanju-note</a></div>
+  </div>
+
+</div>
+
+<button class="fab no-print" onclick="window.print()">🖨️ PDF 저장</button>
+
+</body>
+</html>
