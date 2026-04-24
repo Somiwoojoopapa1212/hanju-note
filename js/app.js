@@ -1044,7 +1044,7 @@ function initCropDrag() {
   c.addEventListener('touchstart', e => { _cropDragging=true; const t=e.touches[0]; _cropLx=t.clientX-_cropX; _cropLy=t.clientY-_cropY; e.preventDefault(); }, {passive:false});
   const move = (x, y) => { if (!_cropDragging) return; _cropX=x-_cropLx; _cropY=y-_cropLy; applyCropTransform(); };
   document.addEventListener('mousemove', e => move(e.clientX, e.clientY));
-  document.addEventListener('touchmove', e => { const t=e.touches[0]; move(t.clientX, t.clientY); e.preventDefault(); }, {passive:false});
+  document.addEventListener('touchmove', e => { if (!_cropDragging) return; const t=e.touches[0]; move(t.clientX, t.clientY); e.preventDefault(); }, {passive:false});
   document.addEventListener('mouseup', () => _cropDragging=false);
   document.addEventListener('touchend', () => _cropDragging=false);
 }
