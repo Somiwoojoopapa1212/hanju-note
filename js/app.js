@@ -625,7 +625,7 @@ async function generateShareCard(noteId) {
   ctx.textAlign = 'left'; ctx.fillText(`${n.date || ''}  ·  주향 노트`, 60, S-30);
 
   const a = document.createElement('a');
-  a.download = `sake-note-${n.name}-${Date.now()}.png`;
+  a.download = `hanju-note-${n.name}-${Date.now()}.png`;
   a.href = canvas.toDataURL('image/png');
   a.click();
   showToast('카드가 저장됐습니다!');
@@ -947,7 +947,7 @@ async function exportData() {
   const blob = new Blob([JSON.stringify({ notes, wishlist, images: imgData, version: 1 }, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `sake-note-${new Date().toISOString().slice(0,10)}.json`;
+  a.download = `hanju-note-${new Date().toISOString().slice(0,10)}.json`;
   a.click();
   showToast('내보내기 완료!');
 }

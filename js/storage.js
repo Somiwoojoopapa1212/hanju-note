@@ -1,6 +1,6 @@
 // ── IndexedDB (photos) ──
 const ImageDB = (() => {
-  const DB = 'sake-note-img', ST = 'images';
+  const DB = 'hanju-note-img', ST = 'images';
   let db = null;
   function open() {
     return new Promise((res, rej) => {
@@ -42,7 +42,7 @@ const ImageDB = (() => {
 
 // ── localStorage wrapper ──
 const Storage = {
-  _k: k => 'sake-note:' + k,
+  _k: k => 'hanju-note:' + k,
 
   getNotes()          { try { return JSON.parse(localStorage.getItem(this._k('notes')) || '[]'); } catch { return []; } },
   saveNotes(v)        { localStorage.setItem(this._k('notes'), JSON.stringify(v)); },
