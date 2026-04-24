@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>주향 노트 아이콘 생성기</title>
+<style>
+  body { font-family: sans-serif; padding: 32px; background: #0c1d38; color: #a8d4f8; }
+  button { margin: 8px; padding: 10px 20px; background: #4a8bc4; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; }
+  button:hover { background: #2c6ba3; }
+  canvas { border: 1px solid #2a4a6a; margin: 8px; display: block; }
+  h2 { color: #a8d4f8; } p { color: #6a8aaa; }
+  code { background: #0a1628; padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h2>🍶 주향 노트 아이콘 생성기</h2>
+<p>아래 버튼을 클릭하면 PNG 아이콘 파일이 다운로드됩니다.<br>
+다운로드된 파일을 <code>icons/</code> 폴더에 덮어쓰기 하세요.</p>
+
+<button onclick="gen(192,'icon-192.png',false)">192×192 다운로드</button>
+<button onclick="gen(512,'icon-512.png',false)">512×512 다운로드</button>
+<button onclick="gen(512,'icon-maskable-512.png',true)">512×512 Maskable 다운로드</button>
+<button onclick="gen(180,'apple-touch-icon.png',false)">180×180 Apple 다운로드</button>
+<br>
+<canvas id="preview" width="200" height="200"></canvas>
+
+<script>
+const SVG = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#cce8f8"/>
+      <stop offset="100%" stop-color="#b2d8f2"/>
+    </linearGradient>
+    <linearGradient id="liq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(248,253,255,0.88)"/>
+      <stop offset="100%" stop-color="rgba(215,238,255,0.94)"/>
+    </linearGradient>
+    <clipPath id="cc">
+      <path d="M55 72 L61 152 L139 152 L145 72 Z"/>
+    </clipPath>
+  </defs>
+  <rect width="200" height="200" rx="RADIUS" fill="url(#bg)"/>
+  <ellipse cx="100" cy="170" rx="47" ry="8" fill="rgba(60,130,210,0.14)"/>
+  <rect x="50" y="78" width="100" height="74" fill="url(#liq)" clip-path="url(#cc)"/>
+  <path d="M55 72 L61 152 L139 152 L145 72" fill="rgba(255,255,255,0.42)" stroke="rgba(148,200,242,0.9)" stroke-width="3.5" stroke-linejoin="round"/>
+  <ellipse cx="100" cy="80" rx="43" ry="8.5" fill="rgba(240,252,255,0.72)"/>
+  <ellipse cx="100" cy="72" rx="46" ry="9.5" fill="white" stroke="rgba(148,200,242,0.85)" stroke-width="3"/>
+  <path d="M63 85 Q60 117 63 144" stroke="rgba(255,255,255,0.84)" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+  <path d="M69 152 Q67 160 67 163 L133 163 Q133 160 131 152" fill="#ecf6fd" stroke="rgba(148,200,242,0.7)" stroke-width="2.5" stroke-linejoin="round"/>
+  <ellipse cx="100" cy="163" rx="33" ry="5.5" fill="rgba(182,225,250,0.55)" stroke="rgba(148,200,242,0.55)" stroke-width="2"/>
+</svg>`;
+
+function gen(size, filename, maskable) {
+  const svgStr = SVG.replace('RADIUS', maskable ? '0' : '42');
+  const blob = new Blob([svgStr], {type:'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, size, size);
+    URL.revokeObjectURL(url);
+    c.toBlob(blob2 => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob2);
+      a.download = filename;
+      a.click();
+    }, 'image/png');
+  };
+  img.src = url;
+}
+
+// 미리보기
+window.onload = () => {
+  const svgStr = SVG.replace('RADIUS', '42');
+  const blob = new Blob([svgStr], {type:'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = () => {
+    const c = document.getElementById('preview');
+    c.getContext('2d').drawImage(img, 0, 0, 200, 200);
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+};
+</script>
+</body>
+</html>

@@ -63,9 +63,11 @@
   --sidebar-width: 220px;
 }
 * { box-sizing:border-box; margin:0; padding:0; }
+html { overflow-y: auto; }
 body {
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   background:var(--bg); color:var(--text); font-size:14px;
+  overflow-y: auto;
 }
 
 /* ══ 레이아웃 ══ */
@@ -273,7 +275,7 @@ body {
 }
 .modal-header h2 { font-size:17px; font-weight:700; }
 .modal-header-actions { display:flex; gap:8px; align-items:center; }
-.modal-body { padding:20px 24px; overflow-y:auto; flex:1; }
+.modal-body { padding:20px 24px; overflow-y:auto; flex:1; min-height:0; }
 .modal-footer {
   display:flex; justify-content:flex-end; gap:8px;
   padding:16px 24px; border-top:1px solid var(--border); flex-shrink:0;
