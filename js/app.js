@@ -87,6 +87,7 @@ let editingWlId = null;
 let statsPeriod = 'all';
 let statsFrom = '', statsTo = '';
 let filterCat = 'all';
+let _communityLoaded = false;
 
 let _pendingImgUrl = null, _deleteImgOnSave = false;
 let _cropCallback = null;
@@ -237,8 +238,122 @@ function navigateTo(page) {
   });
   document.getElementById('page-' + page)?.classList.add('active');
   if (page === 'tasting') renderNoteList();
-  if (page === 'stats') renderStats();
+  if (page === 'stats') {
+    _communityLoaded = false;
+    showStatsView('mine');
+    renderStats();
+  }
   if (page === 'wishlist') renderWishlist();
+}
+
+function showStatsView(view) {
+  document.querySelectorAll('.stats-view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  document.getElementById('stats-view-mine').style.display      = view === 'mine'      ? '' : 'none';
+  document.getElementById('stats-view-community').style.display = view === 'community' ? '' : 'none';
+  if (view === 'community' && !_communityLoaded) {
+    _communityLoaded = true;
+    _loadCommunityInline();
+  }
+}
+
+async function _loadCommunityInline() {
+  const content = document.getElementById('community-inline-content');
+  content.innerHTML = '<p class="loading-hint">⏳ 데이터를 불러오는 중...</p>';
+  try {
+    await _authReady;
+    const snapshot = await db.collection('hanju_tastings').limit(1000).get();
+    const tastings = snapshot.docs.map(doc => doc.data());
+    renderCommunityStats(tastings, content);
+  } catch (err) {
+    content.innerHTML = '<p class="loading-hint">데이터를 불러올 수 없습니다.<br>인터넷 연결을 확인해주세요.</p>';
+  }
+}
+
+function renderCommunityStats(tastings, content) {
+  if (!content) content = document.getElementById('community-inline-content');
+  if (tastings.length === 0) {
+    content.innerHTML = '<p class="loading-hint">아직 공유된 시음 기록이 없습니다.<br>데이터 공유에 동의하면 통계에 기여됩니다 🍶</p>';
+    return;
+  }
+
+  const total = tastings.length;
+  const scores = tastings.filter(t => t.score != null && t.score !== '').map(t => parseFloat(t.score));
+  const avgScore = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : null;
+  const uniqueDrinks = new Set(tastings.map(t => t.drinkName).filter(Boolean)).size;
+
+  const typeCount = {}, regionCount = {}, drinkCount = {};
+  tastings.forEach(t => {
+    const tp = t.type || '미입력';
+    typeCount[tp] = (typeCount[tp] || 0) + 1;
+    const r = t.region || '미입력';
+    regionCount[r] = (regionCount[r] || 0) + 1;
+    if (t.drinkName) drinkCount[t.drinkName] = (drinkCount[t.drinkName] || 0) + 1;
+  });
+
+  const topDrinks = Object.entries(drinkCount).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k])=>k);
+
+  const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : null;
+  const avgNose   = avg(tastings.filter(t=>t.noseScore   !=null&&t.noseScore   !=='').map(t=>parseFloat(t.noseScore)));
+  const avgPalate = avg(tastings.filter(t=>t.palateScore !=null&&t.palateScore !=='').map(t=>parseFloat(t.palateScore)));
+  const avgFinish = avg(tastings.filter(t=>t.finishScore !=null&&t.finishScore !=='').map(t=>parseFloat(t.finishScore)));
+
+  const makeNameList = (countMap, order) => {
+    const entries = order
+      ? order.filter(k=>countMap[k]).map(k=>[k,countMap[k]])
+      : Object.entries(countMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    if (!entries.length) return '<p style="color:var(--text-muted);font-size:13px">데이터 없음</p>';
+    return '<div class="community-name-list">' +
+      entries.map(([label,count],i)=>`
+        <div class="community-name-row">
+          <span class="community-name-rank">${i+1}</span>
+          <span class="community-name-text">${label}</span>
+          <span class="community-name-count">${count}회</span>
+        </div>`).join('') + '</div>';
+  };
+
+  const makeScoreChart = items => {
+    if (!items.length) return '';
+    return '<div class="community-score-chart">' +
+      items.map(([label,score])=>`
+        <div class="community-score-row">
+          <span class="community-score-label">${label}</span>
+          <div class="community-score-track"><div class="community-score-fill" style="width:${score}%"></div></div>
+          <span class="community-score-val">${score}점</span>
+        </div>`).join('') + '</div>';
+  };
+
+  const scoreItems = [
+    avgNose   !== null ? ['향',    avgNose]   : null,
+    avgPalate !== null ? ['맛',    avgPalate] : null,
+    avgFinish !== null ? ['여운',  avgFinish] : null,
+    avgScore  !== null ? ['종합',  avgScore]  : null,
+  ].filter(Boolean);
+
+  content.innerHTML = `
+    <div class="community-header">
+      <div class="community-stat-card"><div class="community-stat-num">${total}</div><div class="community-stat-label">총 시음 기록</div></div>
+      <div class="community-stat-card"><div class="community-stat-num">${uniqueDrinks}</div><div class="community-stat-label">술 종류</div></div>
+      <div class="community-stat-card"><div class="community-stat-num">${avgScore !== null ? avgScore+'점' : '—'}</div><div class="community-stat-label">평균 점수</div></div>
+    </div>
+    ${topDrinks.length ? `<div class="community-section-title">🏆 인기 술 TOP ${topDrinks.length}</div>${makeNameList(drinkCount, topDrinks)}` : ''}
+    <div class="community-section-title">📍 지역별 분포</div>${makeNameList(regionCount, null)}
+    <div class="community-section-title">🏷️ 종류별 분포</div>${makeNameList(typeCount, null)}
+    ${scoreItems.length ? `<div class="community-section-title">⭐ 평균 점수 분석</div>${makeScoreChart(scoreItems)}` : ''}
+    <p style="font-size:11px;color:var(--text-muted);margin-top:24px;text-align:center;line-height:1.6;">
+      💡 데이터 공유에 동의한 사용자들의 익명 시음 기록입니다
+    </p>
+  `;
+}
+
+// ── 동의 배너 ──
+function setConsent(agreed) {
+  Storage.setSetting('cloudConsent', agreed);
+  document.getElementById('consent-banner').style.display = 'none';
+  if (agreed) showToast('감사합니다! 통계에 기여됩니다 🍶');
+}
+function checkConsentBanner() {
+  const val = Storage.getSetting('cloudConsent');
+  if (val === null) document.getElementById('consent-banner').style.display = '';
 }
 
 // ── 타입 변경 핸들러 ──
@@ -500,7 +615,7 @@ async function saveNote() {
   else if (_deleteImgOnSave) await ImageDB.del('note_' + note.id);
 
   if (editingNoteId) Storage.updateNote(note);
-  else Storage.addNote(note);
+  else { Storage.addNote(note); syncNoteToCloud(note); }
 
   closeModal('modal-note');
   showToast(editingNoteId ? '시음 기록이 수정됐습니다.' : '시음 기록이 저장됐습니다.');
@@ -1043,6 +1158,7 @@ function init() {
 
   initCropDrag();
   navigateTo('tasting');
+  checkConsentBanner();
 }
 
 document.addEventListener('DOMContentLoaded', init);

@@ -150,7 +150,14 @@
           <h1 class="page-title">통계</h1>
           <p class="page-subtitle" id="stats-subtitle"></p>
         </div>
+        <div class="stats-view-toggle">
+          <button class="stats-view-btn active" data-view="mine" onclick="showStatsView('mine')">내 통계</button>
+          <button class="stats-view-btn" data-view="community" onclick="showStatsView('community')">다른 사람 통계</button>
+        </div>
       </div>
+
+      <!-- 내 통계 -->
+      <div id="stats-view-mine">
       <div class="stats-period-bar">
         <button class="stats-tab active" data-period="all">전체</button>
         <button class="stats-tab" data-period="month">이번 달</button>
@@ -174,6 +181,14 @@
         <div class="stats-card stats-chart-wide">
           <h3 class="stats-card-title">🎯 나의 취향 분석 리포트</h3>
           <div id="taste-report-section" class="taste-report-wrap"></div>
+        </div>
+      </div>
+      </div><!-- /stats-view-mine -->
+
+      <!-- 다른 사람 통계 -->
+      <div id="stats-view-community" style="display:none">
+        <div id="community-inline-content">
+          <p class="loading-hint">⏳ 불러오는 중...</p>
         </div>
       </div>
     </div>
@@ -651,6 +666,22 @@
 
 <!-- ══ 토스트 ══ -->
 <div id="toast" class="toast"></div>
+
+<!-- ══ 데이터 공유 동의 배너 ══ -->
+<div id="consent-banner" class="consent-banner" style="display:none">
+  <div class="consent-icon">📊</div>
+  <p class="consent-text">익명의 시음 데이터를 공유하여 다른 사람 통계에 기여하시겠어요?<br>개인 정보는 전혀 수집되지 않습니다.</p>
+  <div class="consent-actions">
+    <button class="btn btn-outline btn-sm" onclick="setConsent(false)">괜찮아요</button>
+    <button class="btn btn-primary btn-sm" onclick="setConsent(true)">동의합니다</button>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
 
 <script src="js/storage.js"></script>
 <script src="js/app.js"></script>
