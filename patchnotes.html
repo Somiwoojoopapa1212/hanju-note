@@ -149,7 +149,7 @@
       <div class="release-body">
         <div class="release-header">
           <span class="version-badge latest">v 1.2</span>
-          <span class="release-name">스플래시 재설계 · 사진 크롭 · 카드 개선</span>
+          <span class="release-name">스플래시 재설계 · 사진 크롭 · 카드 개선 · 스크롤 수정</span>
           <span class="latest-tag">LATEST</span>
         </div>
         <div class="change-list">
@@ -168,6 +168,14 @@
           <div class="change-item">
             <span class="change-badge badge-improve">🔧 개선</span>
             <span class="change-text">시음 노트 카드 <strong>썸네일 크기 확대</strong> — 60×60 → 80×80으로 변경. whisky-notes와 동일한 카드 레이아웃으로 통일.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-fix">🐛 수정</span>
+            <span class="change-text"><strong>시음 기록 추가 모달과 통계 페이지에서 스크롤이 되지 않던 문제 수정</strong> — flex 컨테이너 내 <code>min-height:0</code> 누락 및 PWA standalone 모드에서 <code>overflow-y</code> 미명시 문제 해결.</span>
+          </div>
+          <div class="change-item">
+            <span class="change-badge badge-new">✨ 신기능</span>
+            <span class="change-text"><strong>PWA 홈 화면 아이콘 자동 생성</strong> — GitHub Actions로 icon.svg 변경 시 icon-192.png · icon-512.png · icon-maskable-512.png · apple-touch-icon.png 자동 생성. 크롬/Safari 홈 화면 추가 정상 동작.</span>
           </div>
         </div>
       </div>
