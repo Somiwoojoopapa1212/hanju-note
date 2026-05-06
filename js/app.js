@@ -87,6 +87,8 @@ let editingWlId = null;
 let statsPeriod = 'all';
 let statsFrom = '', statsTo = '';
 let filterCat = 'all';
+let currentNoteSearch = '';
+let currentNoteSort = 'date_desc';
 let _communityLoaded = false;
 
 let _pendingImgUrl = null, _deleteImgOnSave = false;
@@ -394,6 +396,15 @@ function handleTypeChange() {
 }
 
 // ════ 시음 노트 ════
+function onNoteSearch(q) {
+  currentNoteSearch = q;
+  renderNoteList();
+}
+function onNoteSort(val) {
+  currentNoteSort = val;
+  renderNoteList();
+}
+
 function renderNoteList() {
   let notes = Storage.getNotes();
 
@@ -404,6 +415,18 @@ function renderNoteList() {
       return t.cat === filterCat;
     });
   }
+
+  if (currentNoteSearch) {
+    const q = currentNoteSearch.toLowerCase();
+    notes = notes.filter(n => (n.name || '').toLowerCase().includes(q));
+  }
+
+  notes = [...notes].sort((a, b) => {
+    if (currentNoteSort === 'date_asc')   return (a.date || '').localeCompare(b.date || '');
+    if (currentNoteSort === 'score_desc') return (parseInt(b.score) || 0) - (parseInt(a.score) || 0);
+    if (currentNoteSort === 'score_asc')  return (parseInt(a.score) || 0) - (parseInt(b.score) || 0);
+    return (b.date || '').localeCompare(a.date || '');
+  });
 
   document.getElementById('tasting-subtitle').textContent =
     `총 ${notes.length}개의 시음 기록`;
