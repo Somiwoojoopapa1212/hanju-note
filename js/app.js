@@ -594,6 +594,7 @@ function openEditNote(id) {
   setVal('note-finish', n.finish);
   setVal('note-pairing', n.pairing);
   setVal('note-notes', n.notes);
+  setVal('note-place', n.place || '');
   setVal('note-price', n.price);
   setScore('note-nose-score', 'val-nose-score', n.noseScore);
   setScore('note-palate-score', 'val-palate-score', n.palateScore);
@@ -609,7 +610,7 @@ function openEditNote(id) {
 
 function clearNoteForm() {
   ['note-name','note-brewery','note-abv','note-polishing','note-base',
-   'note-amount','note-pairing','note-notes','note-price',
+   'note-amount','note-pairing','note-notes','note-price','note-place',
    'note-nose','note-palate','note-finish','note-type-custom'].forEach(id => setVal(id, ''));
   setVal('note-type', 'makgeolli');
   setVal('note-region', '');
@@ -689,6 +690,7 @@ async function saveNote() {
     flavors: getFlavorData(),
     pairing: getVal('note-pairing'),
     notes: getVal('note-notes'),
+    place: getVal('note-place'),
     price: getVal('note-price') ? +getVal('note-price') : null,
   };
 
@@ -1213,6 +1215,18 @@ function closeMoreMenu() { document.getElementById('more-menu-overlay').classLis
 function init() {
   initDarkMode();
   initMoreMenuSwipe();
+
+  // 콜키지도에서 넘어온 경우 시음 노트 폼 자동 실행
+  const _fromPlace = new URLSearchParams(window.location.search).get('place');
+  if (_fromPlace) {
+    history.replaceState({}, '', window.location.pathname);
+    navigateTo('tasting');
+    setTimeout(() => {
+      openAddNote();
+      const placeEl = document.getElementById('note-place');
+      if (placeEl) placeEl.value = _fromPlace;
+    }, 200);
+  }
   // 네비게이션 이벤트
   document.querySelectorAll('[data-page]').forEach(el => {
     el.addEventListener('click', () => navigateTo(el.dataset.page));
