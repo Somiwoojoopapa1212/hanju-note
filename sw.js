@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hanju-note-20260506010806';
+const CACHE_NAME = 'hanju-note-20260506011333';
 const ASSETS = [
   './',
   './index.html',
