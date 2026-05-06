@@ -119,6 +119,32 @@ body {
 }
 .install-btn:hover { background:rgba(74,139,196,0.28); }
 
+/* ══ 툴바 (검색 + 정렬) ══ */
+.tasting-toolbar {
+  display:flex; gap:10px; align-items:center;
+}
+.search-wrap {
+  flex:1; position:relative;
+}
+.search-wrap input {
+  width:100%; padding:9px 12px 9px 34px;
+  border:1.5px solid var(--border); border-radius:8px;
+  font-size:13px; color:var(--text); background:var(--bg);
+  outline:none; transition:border-color 0.15s; font-family:inherit;
+}
+.search-wrap input:focus { border-color:var(--primary); background:#fff; }
+.search-icon {
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  font-size:14px; pointer-events:none; opacity:0.45;
+}
+.sort-select {
+  padding:9px 12px; border:1.5px solid var(--border); border-radius:8px;
+  font-size:13px; color:var(--text); background:var(--bg);
+  cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0;
+  outline:none; transition:border-color 0.15s;
+}
+.sort-select:focus { border-color:var(--primary); }
+
 /* ══ 메인 콘텐츠 ══ */
 .main-content {
   margin-left:var(--sidebar-width); flex:1;
@@ -711,6 +737,9 @@ html.dark .filter-tab.active { background:var(--card-bg); }
 html.dark .filter-tabs { background:var(--secondary); }
 html.dark .stats-custom-date input[type="date"] { background:#0e1c2c; color:var(--text); }
 html.dark .import-file-label { background:var(--secondary); }
+html.dark .search-wrap input { background:#0e1c2c; color:var(--text); }
+html.dark .search-wrap input:focus { background:#122030; }
+html.dark .sort-select { background:#0e1c2c; color:var(--text); }
 html.dark .stats-period-bar { background:rgba(255,255,255,0.06); }
 html.dark .stats-tab { color:var(--text-muted); }
 html.dark .stats-tab.active { background:var(--primary); color:#fff; box-shadow:none; }
