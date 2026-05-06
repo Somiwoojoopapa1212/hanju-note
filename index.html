@@ -161,11 +161,11 @@
         <span>데이터 가져오기</span>
       </button>
       <div style="height:1px;background:rgba(255,255,255,0.07);margin:6px 0"></div>
-      <button class="sidebar-btn" onclick="window.open('https://somiwoojoopapa1212.github.io/whisky-notes/','_blank')">
+      <button class="sidebar-btn" onclick="window.location.href='https://somiwoojoopapa1212.github.io/whisky-notes/'">
         <span style="font-size:13px;line-height:1">🥃</span>
         <span>위스키 노트</span>
       </button>
-      <button class="sidebar-btn" onclick="window.open('https://somiwoojoopapa1212.github.io/kolkijido/','_blank')">
+      <button class="sidebar-btn" onclick="window.location.href='https://somiwoojoopapa1212.github.io/kolkijido/'">
         <span style="font-size:13px;line-height:1">📍</span>
         <span>콜키지도</span>
       </button>
@@ -765,11 +765,11 @@
       <div><div class="more-menu-label" id="darkmode-more-label">다크 모드</div><div class="more-menu-desc">화면 밝기 설정</div></div>
     </button>
     <div class="more-menu-divider"></div>
-    <button class="more-menu-item" onclick="window.open('https://somiwoojoopapa1212.github.io/whisky-notes/','_blank')">
+    <button class="more-menu-item" onclick="window.location.href='https://somiwoojoopapa1212.github.io/whisky-notes/'">
       <span class="more-menu-icon" style="font-size:20px">🥃</span>
       <div><div class="more-menu-label">위스키 노트</div><div class="more-menu-desc">위스키 컬렉션 · 시음 기록</div></div>
     </button>
-    <button class="more-menu-item" onclick="window.open('https://somiwoojoopapa1212.github.io/kolkijido/','_blank')">
+    <button class="more-menu-item" onclick="window.location.href='https://somiwoojoopapa1212.github.io/kolkijido/'">
       <span class="more-menu-icon" style="font-size:20px">📍</span>
       <div><div class="more-menu-label">콜키지도</div><div class="more-menu-desc">서울 콜키지 가능 식당 지도</div></div>
     </button>
@@ -778,6 +778,14 @@
       <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></span>
       <div><div class="more-menu-label">초기화하기</div><div class="more-menu-desc">모든 데이터 삭제</div></div>
     </button>
+  </div>
+</div>
+
+<!-- ══ 노트 상세 바텀시트 (모바일) ══ -->
+<div id="note-sheet-overlay" class="note-sheet-overlay" onclick="closeNoteSheet()">
+  <div id="note-sheet" class="note-sheet" onclick="event.stopPropagation()">
+    <div class="note-sheet-handle"></div>
+    <div id="note-sheet-body" class="note-sheet-body"></div>
   </div>
 </div>
 

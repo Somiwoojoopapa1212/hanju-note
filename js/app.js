@@ -513,6 +513,7 @@ function regionLabel(val) {
 }
 
 function toggleNoteCard(id) {
+  if (window.innerWidth <= 640) { openNoteSheet(id); return; }
   const card = document.getElementById(`note-card-${id}`);
   const detail = document.getElementById(`note-expand-${id}`);
   if (!card || !detail) return;
@@ -529,6 +530,89 @@ function toggleNoteCard(id) {
       }
     }
   }
+}
+
+function openNoteSheet(id) {
+  const n = Storage.getNote(id);
+  if (!n) return;
+  const tl = typeLabel(n);
+  const tcat = n.type === 'custom' ? 'other' : (TYPE_MAP[n.type]?.cat || 'other');
+  const hasFlavors = n.flavors && Object.values(n.flavors).some(v => v > 0);
+
+  document.getElementById('note-sheet-body').innerHTML = `
+    <div class="note-sheet-title">${n.name}</div>
+    <div class="note-sheet-meta">
+      <span class="type-badge ${tcat}">${tl}</span>
+      ${n.brewery ? `<span class="note-brewery">${n.brewery}</span>` : ''}
+      <span class="note-date">${n.date || ''}</span>
+      ${n.score !== null && n.score !== undefined ? `<div class="score-circle" style="width:32px;height:32px;font-size:12px">${n.score}</div>` : ''}
+    </div>
+    <div class="note-detail-grid" style="margin-bottom:12px">
+      ${n.region ? `<div class="note-detail-item"><div class="detail-label">지역</div><div class="detail-value">${regionLabel(n.region)}</div></div>` : ''}
+      ${n.abv ? `<div class="note-detail-item"><div class="detail-label">도수</div><div class="detail-value">${n.abv}%</div></div>` : ''}
+      ${n.servingTemp ? `<div class="note-detail-item"><div class="detail-label">온도</div><div class="detail-value">${SERVING_TEMPS.find(t=>t.value===n.servingTemp)?.label||n.servingTemp}</div></div>` : ''}
+      ${n.color ? `<div class="note-detail-item"><div class="detail-label">색깔</div><div class="detail-value">${n.color}</div></div>` : ''}
+      ${n.clarity ? `<div class="note-detail-item"><div class="detail-label">투명도</div><div class="detail-value">${n.clarity}</div></div>` : ''}
+      ${n.polishingRatio ? `<div class="note-detail-item"><div class="detail-label">정미율</div><div class="detail-value">${n.polishingRatio}%</div></div>` : ''}
+      ${n.amount ? `<div class="note-detail-item"><div class="detail-label">시음량</div><div class="detail-value">${n.amount}ml</div></div>` : ''}
+      ${n.price ? `<div class="note-detail-item"><div class="detail-label">가격</div><div class="detail-value">₩${Number(n.price).toLocaleString()}</div></div>` : ''}
+    </div>
+    ${n.noseScore||n.palateScore||n.finishScore ? `<div class="note-score-row" style="margin-bottom:10px">
+      ${n.noseScore!=null?`<span class="score-badge nose">향 ${n.noseScore}</span>`:''}
+      ${n.palateScore!=null?`<span class="score-badge palate">맛 ${n.palateScore}</span>`:''}
+      ${n.finishScore!=null?`<span class="score-badge finish">여운 ${n.finishScore}</span>`:''}
+    </div>` : ''}
+    ${n.nose?`<div class="note-text-section" style="margin-bottom:8px"><div class="note-text-label">향 Nose</div><div class="note-text-body">${n.nose}</div></div>`:''}
+    ${n.palate?`<div class="note-text-section" style="margin-bottom:8px"><div class="note-text-label">맛 Palate</div><div class="note-text-body">${n.palate}</div></div>`:''}
+    ${n.finish?`<div class="note-text-section" style="margin-bottom:8px"><div class="note-text-label">여운 Finish</div><div class="note-text-body">${n.finish}</div></div>`:''}
+    ${n.notes?`<div class="note-text-section" style="margin-bottom:8px"><div class="note-text-label">메모</div><div class="note-text-body">${n.notes}</div></div>`:''}
+    ${hasFlavors?`<div class="note-radar-wrap"><canvas id="ns-radar" width="180" height="180"></canvas></div>`:''}
+    <div class="note-actions" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+      <button class="btn btn-sm btn-outline" onclick="closeNoteSheet();openEditNote('${n.id}')">수정</button>
+      <button class="btn btn-sm btn-outline" onclick="closeNoteSheet();generateShareCard('${n.id}')">공유 카드</button>
+      <button class="btn btn-sm btn-outline" style="color:var(--danger);border-color:rgba(224,84,84,0.4)" onclick="closeNoteSheet();deleteNote('${n.id}')">삭제</button>
+    </div>
+  `;
+  document.getElementById('note-sheet-overlay').classList.add('open');
+  if (hasFlavors) {
+    requestAnimationFrame(() => {
+      const c = document.getElementById('ns-radar');
+      if (c) drawRadarChart(c, n.flavors, { padding: 28, fontSize: 11, labelPad: 18, lineWidth: 1.5, dotRadius: 3 });
+    });
+  }
+}
+
+function closeNoteSheet() {
+  const overlay = document.getElementById('note-sheet-overlay');
+  const sheet = document.getElementById('note-sheet');
+  sheet.style.transition = 'transform 0.28s ease';
+  sheet.style.transform = 'translateY(100%)';
+  setTimeout(() => {
+    overlay.classList.remove('open');
+    sheet.style.transform = '';
+    sheet.style.transition = '';
+  }, 280);
+}
+
+function initNoteSheetSwipe() {
+  const sheet = document.getElementById('note-sheet');
+  let startY = 0, dragging = false;
+  sheet.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY; dragging = true;
+    sheet.style.transition = 'none';
+  }, { passive: true });
+  sheet.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0) sheet.style.transform = `translateY(${dy}px)`;
+  }, { passive: true });
+  sheet.addEventListener('touchend', e => {
+    if (!dragging) return;
+    dragging = false;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (dy > 80) { closeNoteSheet(); }
+    else { sheet.style.transition = ''; sheet.style.transform = ''; }
+  });
 }
 
 // ── 노트 추가/수정 모달 ──
@@ -1185,6 +1269,7 @@ function closeMoreMenu() { document.getElementById('more-menu-overlay').classLis
 // ════ 초기화 ════
 function init() {
   initDarkMode();
+  initNoteSheetSwipe();
   // 네비게이션 이벤트
   document.querySelectorAll('[data-page]').forEach(el => {
     el.addEventListener('click', () => navigateTo(el.dataset.page));
