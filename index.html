@@ -160,6 +160,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         <span>데이터 가져오기</span>
       </button>
+      <button class="sidebar-btn" id="darkmode-btn" onclick="toggleDarkMode()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <span id="darkmode-label">다크 모드</span>
+      </button>
       <button class="sidebar-btn danger" onclick="resetAllData()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="sidebar-btn-icon"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
         <span>초기화</span>
@@ -172,41 +176,48 @@
 
     <!-- 시음 노트 페이지 -->
     <div id="page-tasting" class="page active">
-      <div class="page-header">
-        <div>
-          <h1 class="page-title">시음 노트</h1>
-          <p class="page-subtitle" id="tasting-subtitle"></p>
+      <div class="page-sticky">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">시음 노트</h1>
+            <p class="page-subtitle" id="tasting-subtitle"></p>
+          </div>
+          <button class="btn btn-primary" onclick="openAddNote()">+ 기록 추가</button>
         </div>
-        <button class="btn btn-primary" onclick="openAddNote()">+ 기록 추가</button>
-      </div>
-      <div class="filter-bar">
-        <div class="filter-tabs">
-          <button class="filter-tab active" data-cat="all">전체</button>
-          <button class="filter-tab" data-cat="korean">한국 전통주</button>
-          <button class="filter-tab" data-cat="japanese">일본주</button>
-          <button class="filter-tab" data-cat="other">기타</button>
+        <div class="filter-bar">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-cat="all">전체</button>
+            <button class="filter-tab" data-cat="korean">한국 전통주</button>
+            <button class="filter-tab" data-cat="japanese">일본주</button>
+            <button class="filter-tab" data-cat="other">기타</button>
+          </div>
         </div>
       </div>
-      <div class="note-list" id="note-list"></div>
-      <div class="empty-state" id="tasting-empty" style="display:none">
-        <div class="empty-icon">🍶</div>
-        <p>첫 번째 시음 기록을 남겨보세요!</p>
-        <button class="btn btn-primary" onclick="openAddNote()">기록 추가하기</button>
+      <div class="page-scroll">
+        <div class="note-list" id="note-list"></div>
+        <div class="empty-state" id="tasting-empty" style="display:none">
+          <div class="empty-icon">🍶</div>
+          <p>첫 번째 시음 기록을 남겨보세요!</p>
+          <button class="btn btn-primary" onclick="openAddNote()">기록 추가하기</button>
+        </div>
       </div>
     </div>
 
     <!-- 통계 페이지 -->
     <div id="page-stats" class="page">
-      <div class="page-header">
-        <div>
-          <h1 class="page-title">통계</h1>
-          <p class="page-subtitle" id="stats-subtitle"></p>
-        </div>
-        <div class="stats-view-toggle">
-          <button class="stats-view-btn active" data-view="mine" onclick="showStatsView('mine')">내 통계</button>
-          <button class="stats-view-btn" data-view="community" onclick="showStatsView('community')">다른 사람 통계</button>
+      <div class="page-sticky">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">통계</h1>
+            <p class="page-subtitle" id="stats-subtitle"></p>
+          </div>
+          <div class="stats-view-toggle">
+            <button class="stats-view-btn active" data-view="mine" onclick="showStatsView('mine')">내 통계</button>
+            <button class="stats-view-btn" data-view="community" onclick="showStatsView('community')">다른 사람 통계</button>
+          </div>
         </div>
       </div>
+      <div class="page-scroll">
 
       <!-- 내 통계 -->
       <div id="stats-view-mine">
@@ -243,22 +254,28 @@
           <p class="loading-hint">⏳ 불러오는 중...</p>
         </div>
       </div>
+
+      </div><!-- /page-scroll -->
     </div>
 
     <!-- 위시리스트 페이지 -->
     <div id="page-wishlist" class="page">
-      <div class="page-header">
-        <div>
-          <h1 class="page-title">위시리스트</h1>
-          <p class="page-subtitle" id="wishlist-subtitle"></p>
+      <div class="page-sticky">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">위시리스트</h1>
+            <p class="page-subtitle" id="wishlist-subtitle"></p>
+          </div>
+          <button class="btn btn-primary" onclick="openAddWishlist()">+ 추가</button>
         </div>
-        <button class="btn btn-primary" onclick="openAddWishlist()">+ 추가</button>
       </div>
-      <div class="wishlist-list" id="wishlist-list"></div>
-      <div class="empty-state" id="wishlist-empty" style="display:none">
-        <div class="empty-icon">🔖</div>
-        <p>마셔보고 싶은 술을 저장해보세요!</p>
-        <button class="btn btn-primary" onclick="openAddWishlist()">추가하기</button>
+      <div class="page-scroll">
+        <div class="wishlist-list" id="wishlist-list"></div>
+        <div class="empty-state" id="wishlist-empty" style="display:none">
+          <div class="empty-icon">🔖</div>
+          <p>마셔보고 싶은 술을 저장해보세요!</p>
+          <button class="btn btn-primary" onclick="openAddWishlist()">추가하기</button>
+        </div>
       </div>
     </div>
 
@@ -655,6 +672,9 @@
   </div>
 </div>
 
+<!-- ══ FAB 빠른 추가 버튼 (모바일) ══ -->
+<button id="fab-add" class="fab-btn" onclick="fabAction()">+</button>
+
 <!-- ══ 모바일 하단 내비 ══ -->
 <nav class="bottom-nav">
   <button class="bottom-nav-item active" data-page="tasting">
@@ -718,6 +738,10 @@
     <button class="more-menu-item" onclick="closeMoreMenu();openImportModal()">
       <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
       <div><div class="more-menu-label">데이터 가져오기</div><div class="more-menu-desc">JSON 파일에서 복원</div></div>
+    </button>
+    <button class="more-menu-item" onclick="closeMoreMenu();toggleDarkMode()">
+      <span class="more-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="more-menu-svg"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+      <div><div class="more-menu-label" id="darkmode-more-label">다크 모드</div><div class="more-menu-desc">화면 밝기 설정</div></div>
     </button>
     <div class="more-menu-divider"></div>
     <button class="more-menu-item danger" onclick="closeMoreMenu();resetAllData()">

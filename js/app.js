@@ -229,6 +229,36 @@ function setScore(sliderId, labelId, val) {
   }
 }
 
+// ── 다크 모드 ──
+function initDarkMode() {
+  const saved = localStorage.getItem('darkMode');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyDarkMode(saved !== null ? saved === 'true' : prefersDark);
+}
+function applyDarkMode(isDark) {
+  document.documentElement.classList.toggle('dark', isDark);
+  const label = document.getElementById('darkmode-label');
+  const moreLabel = document.getElementById('darkmode-more-label');
+  if (label) label.textContent = isDark ? '라이트 모드' : '다크 모드';
+  if (moreLabel) moreLabel.textContent = isDark ? '라이트 모드' : '다크 모드';
+}
+function toggleDarkMode() {
+  const isDark = !document.documentElement.classList.contains('dark');
+  localStorage.setItem('darkMode', isDark);
+  applyDarkMode(isDark);
+}
+
+// ── FAB ──
+function updateFab(page) {
+  const fab = document.getElementById('fab-add');
+  if (!fab) return;
+  fab.classList.toggle('fab-hidden', page === 'stats');
+}
+function fabAction() {
+  if (currentPage === 'tasting') openAddNote();
+  else if (currentPage === 'wishlist') openAddWishlist();
+}
+
 // ── 페이지 전환 ──
 function navigateTo(page) {
   currentPage = page;
@@ -244,6 +274,7 @@ function navigateTo(page) {
     renderStats();
   }
   if (page === 'wishlist') renderWishlist();
+  updateFab(page);
 }
 
 function showStatsView(view) {
@@ -1130,6 +1161,7 @@ function closeMoreMenu() { document.getElementById('more-menu-overlay').classLis
 
 // ════ 초기화 ════
 function init() {
+  initDarkMode();
   // 네비게이션 이벤트
   document.querySelectorAll('[data-page]').forEach(el => {
     el.addEventListener('click', () => navigateTo(el.dataset.page));
